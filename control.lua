@@ -330,7 +330,7 @@ function microcontrollerGui( player, entity )
     for i = 1, 4 do
         local sb = inspectorflow.add{type = "sprite-button", name = "mem"..i.."-inspect", tooltip = "mem"..i}
         sb.style.horizontally_stretchable = true
-        sb.style.align = "right"
+        sb.style.horizontal_align = "right"
     end
     state.inspector = inspectorflow
 
