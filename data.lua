@@ -20,7 +20,6 @@ data:extend{
         icon = "__microcontroller__/graphics/microchip.png",
         icon_size = 32,
         stack_size = 10,
-        flags = {'goes-to-quickbar'},
         subgroup = "circuit-network",
         order = 'zz'
     },
@@ -31,7 +30,6 @@ data:extend{
         icon = "__microcontroller__/graphics/ram.png",
         icon_size = 32,
         stack_size = 10,
-        flags = {'goes-to-quickbar'},
         subgroup = "circuit-network",
         order = 'zz'
     },
