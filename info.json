@@ -1,11 +1,10 @@
 {
   "name": "microcontroller",
-  "version": "0.4.1",
-  "factorio_version": "0.16",
+  "version": "0.5.0",
+  "factorio_version": "0.17",
   "title": "MicroController",
   "author": "Luke Perkin",
   "contact": "",
   "www": "www.locogame.co.uk",
-  "description": "",
-  "dependencies": ["base >= 0.16.0"]
+  "dependencies": ["base"]
 }
