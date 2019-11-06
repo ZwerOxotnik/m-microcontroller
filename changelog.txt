@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.5.0
+Date: 06. 11. 2019
+  Notes:
+    - This update for Factorio 0.17 and updated by ZwerOxotnik
+    - I need much more tests etc
