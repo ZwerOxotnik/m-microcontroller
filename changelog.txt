@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.5.2
+Date: 08. 11. 2019
+  Changes:
+    - Added FAL reference in the mod folder
+  Notes:
+    - This update for Factorio 0.17 and updated by ZwerOxotnik
+    - I need much more tests, fix UI style etc
+
+---------------------------------------------------------------------------------------------------
 Version: 0.5.1
 Date: 08. 11. 2019
   Bugfixes:
