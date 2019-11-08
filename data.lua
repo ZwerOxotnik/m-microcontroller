@@ -17,7 +17,7 @@ data:extend{
         type = "item",
         name = "microcontroller",
         place_result = 'microcontroller',
-        icon = "__microcontroller__/graphics/microchip.png",
+        icon = "__m-microcontroller__/graphics/microchip.png",
         icon_size = 32,
         stack_size = 10,
         subgroup = "circuit-network",
@@ -27,7 +27,7 @@ data:extend{
         type = "item",
         name = "microcontroller-ram",
         place_result = 'microcontroller-ram',
-        icon = "__microcontroller__/graphics/ram.png",
+        icon = "__m-microcontroller__/graphics/ram.png",
         icon_size = 32,
         stack_size = 10,
         subgroup = "circuit-network",
@@ -69,42 +69,42 @@ data:extend{
     {
         type = "sprite",
         name = "microcontroller-play-sprite",
-        filename = "__microcontroller__/graphics/play.png",
+        filename = "__m-microcontroller__/graphics/play.png",
         width = 32,
         height = 32
     },
     {
         type = "sprite",
         name = "microcontroller-stop-sprite",
-        filename = "__microcontroller__/graphics/stop.png",
+        filename = "__m-microcontroller__/graphics/stop.png",
         width = 32,
         height = 32
     },
     {
         type = "sprite",
         name = "microcontroller-next-sprite",
-        filename = "__microcontroller__/graphics/next.png",
+        filename = "__m-microcontroller__/graphics/next.png",
         width = 32,
         height = 32
     },
     {
         type = "sprite",
         name = "microcontroller-exit-sprite",
-        filename = "__microcontroller__/graphics/cancel.png",
+        filename = "__m-microcontroller__/graphics/cancel.png",
         width = 32,
         height = 32
     },
     {
         type = "sprite",
         name = "microcontroller-copy-sprite",
-        filename = "__microcontroller__/graphics/copy.png",
+        filename = "__m-microcontroller__/graphics/copy.png",
         width = 32,
         height = 32
     },
     {
         type = "sprite",
         name = "microcontroller-paste-sprite",
-        filename = "__microcontroller__/graphics/draft.png",
+        filename = "__m-microcontroller__/graphics/draft.png",
         width = 32,
         height = 32
     },
@@ -112,7 +112,7 @@ data:extend{
     {
         type = "virtual-signal",
         name = "signal-mc-halt",
-        icon = "__microcontroller__/graphics/signal_halt.png",
+        icon = "__m-microcontroller__/graphics/signal_halt.png",
         icon_size = 32,
         subgroup = "virtual-signal-letter",
         order = "c[microcntroller]-[A]"
@@ -120,7 +120,7 @@ data:extend{
     {
         type = "virtual-signal",
         name = "signal-mc-run",
-        icon = "__microcontroller__/graphics/signal_run.png",
+        icon = "__m-microcontroller__/graphics/signal_run.png",
         icon_size = 32,
         subgroup = "virtual-signal-letter",
         order = "c[microcntroller]-[B]"
@@ -128,7 +128,7 @@ data:extend{
     {
         type = "virtual-signal",
         name = "signal-mc-step",
-        icon = "__microcontroller__/graphics/signal_step.png",
+        icon = "__m-microcontroller__/graphics/signal_step.png",
         icon_size = 32,
         subgroup = "virtual-signal-letter",
         order = "c[microcntroller]-[C]"
@@ -136,7 +136,7 @@ data:extend{
     {
         type = "virtual-signal",
         name = "signal-mc-sleep",
-        icon = "__microcontroller__/graphics/signal_sleep.png",
+        icon = "__m-microcontroller__/graphics/signal_sleep.png",
         icon_size = 32,
         subgroup = "virtual-signal-letter",
         order = "c[microcntroller]-[D]"
@@ -144,7 +144,7 @@ data:extend{
     {
         type = "virtual-signal",
         name = "signal-mc-jump",
-        icon = "__microcontroller__/graphics/signal_jump.png",
+        icon = "__m-microcontroller__/graphics/signal_jump.png",
         icon_size = 32,
         subgroup = "virtual-signal-letter",
         order = "c[microcntroller]-[E]"
@@ -161,7 +161,7 @@ for i = 1, MC_LINES do
         {
             type = "sprite",
             name = "microcontroller-line-sprite-default-"..i,
-            filename = "__microcontroller__/graphics/lines.png",
+            filename = "__m-microcontroller__/graphics/lines.png",
             width = 42,
             height = h,
             x = 0,
@@ -172,7 +172,7 @@ for i = 1, MC_LINES do
         {
             type = "sprite",
             name = "microcontroller-line-sprite-active-"..i,
-            filename = "__microcontroller__/graphics/lines.png",
+            filename = "__m-microcontroller__/graphics/lines.png",
             width = 42,
             height = h,
             x = 42,
@@ -183,7 +183,7 @@ for i = 1, MC_LINES do
         {
             type = "sprite",
             name = "microcontroller-line-sprite-error-"..i,
-            filename = "__microcontroller__/graphics/lines.png",
+            filename = "__m-microcontroller__/graphics/lines.png",
             width = 42,
             height = h,
             x = 84,
