@@ -303,15 +303,21 @@ function microcontrollerGui( player, entity )
     state.gui_line_numbers = flow.add{type = "text-box", style = "notice_textbox", ignored_by_interaction = true}
     state.gui_line_numbers.style.font = "default-mono"
     state.gui_line_numbers.style.font_color = {r = 0.9, g = 0.9, b = 0.975}
+    state.gui_line_numbers.style.horizontally_stretchable = false
+    state.gui_line_numbers.style.vertically_stretchable = false
+    state.gui_line_numbers.style.maximal_width = 40
     updateLines(state.gui_line_numbers, state)
 
     local textbox = flow.add{type = "text-box", name = "program-input", style = "notice_textbox"}
     textbox.text = state.program_text
     textbox.word_wrap = false
+    textbox.style.horizontally_stretchable = true
+    textbox.style.vertically_stretchable = true
     textbox.style.minimal_width = 260
-    textbox.style.maximal_width = 260
+    -- textbox.style.maximal_width = 260
     textbox.style.minimal_height = 590
-    textbox.style.maximal_height = 590
+    -- textbox.style.maximal_height = 590
+    textbox.style.horizontal_align = "left"
     textbox.style.font = "default-mono"
     state.gui_program_input = textbox
 
