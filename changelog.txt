@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.5.3
+Date: 09. 11. 2019
+  Bugfixes:
+    - Fixed a bug related to desynchronization on on_built_entity, on_robot_built_entity events
+  Changes:
+    - Changed user interface
+    - Refactoring
+  Notes:
+    - This update for Factorio 0.17 and updated by ZwerOxotnik
+    - I need much more tests, fix UI style etc
+
+---------------------------------------------------------------------------------------------------
 Version: 0.5.2
 Date: 08. 11. 2019
   Changes:

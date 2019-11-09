@@ -35,14 +35,57 @@ script.on_event("microcontroller-open", function(event)
     end
 end)
 
+local function check_adjacency_microcontroller(offset, index)
+    if offset >= 0 and index == 1 then
+        return 1
+    elseif offset >= 0 and index == 2 then
+        return 2
+    elseif offset < 0 and index == 1 then
+        return 3
+    else
+        return 4
+    end
+end
+
+local function attach_microcontroller(entity)
+    local adjacent = {{x = entity.position.x, y = entity.position.y + 1}, {x = entity.position.x, y = entity.position.y - 1}}
+    local inverse = {2, 1, 3, 4}
+    -- Iterate over adjacent positions.
+    for index, pos in pairs(adjacent) do
+        -- Check if there is a MicroController adjacent.
+        local mc = entity.surface.find_entity("microcontroller", pos)
+        if mc then
+            index = check_adjacency_microcontroller(mc.position.x - pos.x, index)
+            microcontroller.attach_module(mc, entity, index)
+            microcontroller.attach_module(entity, mc, inverse[index])
+        end
+    end
+end
+
+
+local function attach_microcontroller_ram(entity)
+    local adjacent = {{x = entity.position.x, y = entity.position.y + 1}, {x = entity.position.x, y = entity.position.y - 1}}
+    -- Iterate over adjacent positions.
+    for index, pos in pairs(adjacent) do
+        -- Check if there is a MicroController adjacent.
+        local mc = entity.surface.find_entity("microcontroller", pos)
+        if mc then
+            index = check_adjacency_microcontroller(mc.position.x - pos.x, index)
+            microcontroller.attach_module(mc, entity, index)
+        end
+    end
+end
+
 -- Handle Entity built event.
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
     local entity = event.created_entity
-    if entity.name and entity.name == "microcontroller" then
+    if not (entity and entity.valid) then return end
+
+    if entity.name == "microcontroller" then
         -- Init and insert new microcontroller to global state.
         microcontroller.init(entity, {})
         local didFind = false
-        for i, mc in ipairs(global.microcontrollers) do
+        for _, mc in ipairs(global.microcontrollers) do
             if mc == entity then
                 didFind = true
             end
@@ -50,31 +93,10 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
         if not didFind then
             table.insert(global.microcontrollers, entity)
         end
-    end
-    if entity.name and (entity.name == "microcontroller-ram" or entity.name == "microcontroller") then
-        local adjacent = {{x = entity.position.x, y = entity.position.y + 1}, {x = entity.position.x, y = entity.position.y - 1}}
-        local inverse = {2, 1, 3, 4}
-        -- Iterate over adjacent positions.
-        for index, pos in ipairs(adjacent) do
-            -- Check if there is a MicroController adjacent.
-            local mc = entity.surface.find_entity("microcontroller", pos)
-            if mc then
-                local offset = mc.position.x - pos.x
-                if offset >= 0 and index == 1 then
-                    index = 1
-                elseif offset >= 0 and index == 2 then
-                    index = 2
-                elseif offset < 0 and index == 1 then
-                    index = 3
-                else
-                    index = 4
-                end
-                microcontroller.attach_module(mc, entity, index)
-                if entity.name == "microcontroller" then
-                    microcontroller.attach_module(entity, mc, inverse[index])
-                end
-            end
-        end
+
+        attach_microcontroller(entity)
+    elseif entity.name == "microcontroller-ram" then
+        attach_microcontroller_ram(entity)
     end
 end)
 
@@ -153,8 +175,16 @@ script.on_event(defines.events.on_gui_click, function(event)
             local helptext = player.gui.center.add{type = "text-box", name = "mc-docs", text = HELP_TEXT}
             helptext.read_only = true
             helptext.style.font = "default-mono"
+            helptext.style.height = 520
+            helptext.style.width = 430
             helptext.style.minimal_height = 310
-            helptext.style.maximal_height = 310
+            helptext.style.maximal_height = 610
+            helptext.style.minimal_width = 200
+            helptext.style.maximal_width = 600
+            -- helptext.style.horizontally_stretchable = true
+            -- helptext.style.vertically_stretchable = true
+            -- helptext.style.horizontally_squashable = false
+            -- helptext.style.vertically_squashable = false
         end
     end
     set_player_data(event.player_index, player_data)
@@ -300,25 +330,22 @@ function microcontrollerGui( player, entity )
     state.gui_exit_button = buttons_row.add{type = "sprite-button", name = "close-microcontroller-window", sprite = "microcontroller-exit-sprite"}
 
     local flow = outerflow.add{type = "flow", name = "inner", direction = "horizontal"}
-    state.gui_line_numbers = flow.add{type = "text-box", style = "notice_textbox", ignored_by_interaction = true}
-    state.gui_line_numbers.style.font = "default-mono"
+    flow.style.horizontally_stretchable = true
+
+    state.gui_line_numbers = flow.add{type = "text-box", style = "mc_notice_textbox", ignored_by_interaction = true}
     state.gui_line_numbers.style.font_color = {r = 0.9, g = 0.9, b = 0.975}
     state.gui_line_numbers.style.horizontally_stretchable = false
     state.gui_line_numbers.style.vertically_stretchable = false
     state.gui_line_numbers.style.maximal_width = 40
     updateLines(state.gui_line_numbers, state)
 
-    local textbox = flow.add{type = "text-box", name = "program-input", style = "notice_textbox"}
+    local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_notice_textbox"}
     textbox.text = state.program_text
     textbox.word_wrap = false
-    textbox.style.horizontally_stretchable = true
-    textbox.style.vertically_stretchable = true
     textbox.style.minimal_width = 260
-    -- textbox.style.maximal_width = 260
-    textbox.style.minimal_height = 590
-    -- textbox.style.maximal_height = 590
-    textbox.style.horizontal_align = "left"
-    textbox.style.font = "default-mono"
+    textbox.style.minimal_height = 648
+    textbox.style.maximal_width = 0
+    textbox.style.horizontally_stretchable = true
     state.gui_program_input = textbox
 
     if microcontroller.is_running(entity) then
@@ -331,8 +358,11 @@ function microcontrollerGui( player, entity )
 
     local inspectorflow = outerflow.add{type = "frame", direction = "horizontal"}
     inspectorflow.style.horizontally_stretchable = true
+    inspectorflow.style.width = 368
     inspectorflow.style.left_padding = 64
-    inspectorflow.style.right_padding = 64
+    -- inspectorflow.style.right_padding = 64
+    -- inspectorflow.style.minimal_width = 172
+    -- inspectorflow.style.maximal_width = 0
     for i = 1, 4 do
         local sb = inspectorflow.add{type = "sprite-button", name = "mem"..i.."-inspect", tooltip = "mem"..i}
         sb.style.horizontally_stretchable = true

@@ -1,5 +1,6 @@
 require('stdlib/table')
 require('constants')
+require('prototypes/style')
 
 data:extend{
     table.merge(table.deepcopy(data.raw['arithmetic-combinator']['arithmetic-combinator']), {
