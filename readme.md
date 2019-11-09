@@ -22,35 +22,39 @@ FAL has 34 Opcodes and can read 32 lines of instructions.
 
 ## 1-st
 
-\# Outputs the first signal\
-\# from red multiplied by 2.\
-mov red1 mem1\
-mul mem1 2\
-mov mem1 out\
+```
+# Outputs the first signal
+# from red multiplied by 2.
+mov red1 mem1
+mul mem1 2
+mov mem1 out
 jmp 2
+```
 
 ## 2-nd
 
-\# accumulates first 4\
-\# signals on the red wire.\
-:SETUP\
-clr\
-set 11 mem2\
-set 1 mem3\
-:LOOP\
-mov red@3 mem1\
-add mem1 mem@2\
-mov mem1 mem@2\
-:NEXT\
-add mem2 1\
-tlt mem1 15\
-set 11 mem1\
-mov mem1 mem2\
-add mem3 1\
-tlt mem1 5\
-set 1 mem1\
-mov mem1 mem3\
+```
+# accumulates first 4
+# signals on the red wire.
+:SETUP
+clr
+set 11 mem2
+set 1 mem3
+:LOOP
+mov red@3 mem1
+add mem1 mem@2
+mov mem1 mem@2
+:NEXT
+add mem2 1
+tlt mem1 15
+set 11 mem1
+mov mem1 mem2
+add mem3 1
+tlt mem1 5
+set 1 mem1
+mov mem1 mem3
 jmp :LOOP
+```
 
 # <a name="terms-of-use"></a> Terms of use
 
