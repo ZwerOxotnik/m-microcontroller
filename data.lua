@@ -20,7 +20,7 @@ data:extend{
         place_result = 'microcontroller',
         icon = "__m-microcontroller__/graphics/microchip.png",
         icon_size = 32,
-        stack_size = 10,
+        stack_size = 20,
         subgroup = "circuit-network",
         order = 'zz'
     },
@@ -30,7 +30,7 @@ data:extend{
         place_result = 'microcontroller-ram',
         icon = "__m-microcontroller__/graphics/ram.png",
         icon_size = 32,
-        stack_size = 10,
+        stack_size = 40,
         subgroup = "circuit-network",
         order = 'zz'
     },

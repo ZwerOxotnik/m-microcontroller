@@ -339,12 +339,8 @@ function microcontrollerGui( player, entity )
     state.gui_line_numbers.style.maximal_width = 40
     updateLines(state.gui_line_numbers, state)
 
-    local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_notice_textbox"}
+    local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_program_input"}
     textbox.text = state.program_text
-    textbox.word_wrap = false
-    textbox.style.minimal_width = 260
-    textbox.style.minimal_height = 648
-    textbox.style.maximal_width = 0
     textbox.style.horizontally_stretchable = true
     state.gui_program_input = textbox
 
