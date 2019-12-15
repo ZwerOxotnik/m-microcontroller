@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.5.8
+Date: 15. 12. 2019
+  Features:
+    - Added compact FAL's wiki
+  Changes:
+    - Changed FAL REFERENCE
+  Notes:
+    - This update for Factorio 0.17 and updated by ZwerOxotnik
+    - I need much more tests, fix UI style etc
+---------------------------------------------------------------------------------------------------
 Version: 0.5.7
 Date: 14. 12. 2019
   Features:
