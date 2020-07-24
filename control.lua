@@ -99,6 +99,16 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
     end
 end)
 
+-- Handle Entity settings pasted event.
+script.on_event({defines.events.on_entity_settings_pasted}, function(event)
+    local source = event.source
+    local destination = event.destination
+
+    if source.name == "microcontroller" and destination.name == source.name then
+        Entity.get_data(destination).program_text = Entity.get_data(source).program_text
+    end
+end)
+
 -- Handle MicroController GUI Close event.
 script.on_event("microcontroller-close", function(event)
     local player = game.players[event.player_index]
