@@ -1,4 +1,20 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.6.3
+Date: 25. 07. 2020
+  Changes:
+    - Changed the background color
+  Notes:
+    - This update for Factorio 0.18 and updated by ZwerOxotnik
+    - I need much more tests, fix UI style etc
+---------------------------------------------------------------------------------------------------
+Version: 0.6.2
+Date: 25. 07. 2020
+  Changes:
+    - Changed the background color
+  Notes:
+    - This update for Factorio 0.17 and updated by ZwerOxotnik
+    - I need much more tests, fix UI style etc
+---------------------------------------------------------------------------------------------------
 Version: 0.6.1
 Date: 24. 07. 2020
   Features:
