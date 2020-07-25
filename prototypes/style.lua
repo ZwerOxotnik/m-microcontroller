@@ -21,7 +21,7 @@ default_gui["mc_notice_textbox"] = {
           height = 1
     },
     default_background = {
-      filename = "__m-microcontroller__/graphics/black.png",
+      filename = "__m-microcontroller__/graphics/grey.png",
       width = 1,
       height = 1
     }
@@ -36,7 +36,7 @@ default_gui["mc_program_input"] = {
     },
     font = "default-mono",
     font_color = {r=0, g=1, b=0},
-    disabled_font_color = {r=0, g=0, b=0},
+    disabled_font_color = {r=0, g=1, b=0},
     selection_background_color = {r=0, g=0, b=0},
     rich_text_setting = "disabled",
 	maximal_width = 400,
@@ -50,7 +50,7 @@ default_gui["mc_program_input"] = {
           height = 1
     },
     default_background = {
-      filename = "__m-microcontroller__/graphics/black.png",
+      filename = "__m-microcontroller__/graphics/grey.png",
       width = 1,
       height = 1
     }
