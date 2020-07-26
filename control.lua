@@ -393,7 +393,6 @@ function microcontrollerGui( player, entity )
 
     local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_program_input"}
     textbox.text = state.program_text
-    textbox.style.horizontally_stretchable = true
     state.gui_program_input = textbox
 
     if microcontroller.is_running(entity) then
