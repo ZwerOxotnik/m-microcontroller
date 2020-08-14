@@ -4,7 +4,6 @@ local Surface = require("stdlib/surface")
 local microcontroller = require('microcontroller')
 require('stdlib/string')
 require('constants')
-require('help')
 require('stdlib/area/tile')
 
 function get_player_data(player_index)
@@ -100,6 +99,16 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
     end
 end)
 
+-- Handle Entity settings pasted event.
+script.on_event({defines.events.on_entity_settings_pasted}, function(event)
+    local source = event.source
+    local destination = event.destination
+
+    if source.name == "microcontroller" and destination.name == source.name then
+        Entity.get_data(destination).program_text = Entity.get_data(source).program_text
+    end
+end)
+
 -- Handle MicroController GUI Close event.
 script.on_event("microcontroller-close", function(event)
     local player = game.players[event.player_index]
@@ -132,59 +141,102 @@ script.on_event(defines.events.on_gui_text_changed, function(event)
     set_player_data(event.player_index, player_data)
 end)
 
+local function update_topics_gui(gui)
+    gui.clear()
+    local doc = DOCS[gui.parent.parent.mc_doc_list.selected_index]
+    local topics = doc.content
+    gui.add{type = "label", caption = {"microcontroller.hover-text-hint"}, tooltip = {"microcontroller.doc." .. doc.name .. "_description"}}
+    gui.add{type = "label"}
+    for _, topic in pairs(topics) do
+        if topic.name then
+            if topic.syntax then
+                local label = gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
+                local syntax_label = gui.add{type = "label", caption = {"", {"microcontroller.syntax"}, {"colon"}, " " .. topic.syntax}}
+            else
+                local label = gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
+            end
+        end
+        if topic.example then
+            gui.add{type = "label", caption = {"", {"microcontroller.example"}, {"colon"}}}
+            local textbox = gui.add{type = "text-box", text = topic.example}
+            textbox.read_only = true
+        end
+    end
+end
+
+
+
+-- Handle selection in GUI.
+script.on_event(defines.events.on_gui_selection_state_changed, function(event)
+    local player = game.players[event.player_index]
+    if not (player and player.valid) then return end
+    local element = event.element
+    if not (element and element.valid and element.name) then return end
+
+    if element.name == "mc_doc_list" then
+        update_topics_gui(element.parent.mc_scroll_pane.mc_topics_gui)
+    end
+end)
+
 -- Handle GUI button presses.
 script.on_event(defines.events.on_gui_click, function(event)
     local player = game.players[event.player_index]
+    if not (player and player.valid) then return end
     local player_data = get_player_data(event.player_index)
     local element = event.element
-    -- RUN button pressed:
-    if element.name and element.name == "run-program" then
-        local mc_state = Entity.get_data(player_data.open_microcontroller)
-        element.parent.parent.error_message.caption = ""
-        microcontroller.compile(player_data.open_microcontroller, mc_state)
-        microcontroller.run(player_data.open_microcontroller, mc_state)
-    -- HALT button pressed:
-    elseif element.name and element.name == "halt-program" then
-        local mc_state = Entity.get_data(player_data.open_microcontroller)
-        microcontroller.halt(player_data.open_microcontroller, mc_state)
-    -- STEP button pressed:
-    elseif element.name and element.name == "step-program" then
-        local mc_state = Entity.get_data(player_data.open_microcontroller)
-        element.parent.parent.error_message.caption = ""
-        microcontroller.compile(player_data.open_microcontroller, mc_state)
-        microcontroller.step(player_data.open_microcontroller, mc_state)
-    -- CLOSE button pressed:
-    elseif element.name and element.name == "close-microcontroller-window" then
-        microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.inner['program-input'].text)
-        player_data.open_microcontroller_gui.destroy();
-        player_data.open_microcontroller_gui = nil
-        if player.gui.center['mc-docs'] then
-            player.gui.center['mc-docs'].destroy()
-        end
-    -- COPY button pressed:
-    elseif element.name and element.name == "copy-program" then
-        player_data.program_clipboard = player.gui.left.microcontroller.outer.inner['program-input'].text
-    -- PASTE button pressed:
-    elseif element.name and element.name == "paste-program" and player_data.program_clipboard then
-        player_data.open_microcontroller_gui.outer.inner['program-input'].text = player_data.program_clipboard
-    -- SHOW/HIDE DOCS button pressed:
-    elseif element.name and element.name == "mc-help-button" then
-        if player.gui.center['mc-docs'] then
-            player.gui.center['mc-docs'].destroy()
-        else
-            local helptext = player.gui.center.add{type = "text-box", name = "mc-docs", text = HELP_TEXT}
-            helptext.read_only = true
-            helptext.style.font = "default-mono"
-            helptext.style.height = 520
-            helptext.style.width = 430
-            helptext.style.minimal_height = 310
-            helptext.style.maximal_height = 610
-            helptext.style.minimal_width = 200
-            helptext.style.maximal_width = 600
-            -- helptext.style.horizontally_stretchable = true
-            -- helptext.style.vertically_stretchable = true
-            -- helptext.style.horizontally_squashable = false
-            -- helptext.style.vertically_squashable = false
+    if element and element.valid and element.name then
+        -- RUN button pressed:
+        if element.name == "run-program" then
+            local mc_state = Entity.get_data(player_data.open_microcontroller)
+            element.parent.parent.error_message.caption = ""
+            microcontroller.compile(player_data.open_microcontroller, mc_state)
+            microcontroller.run(player_data.open_microcontroller, mc_state)
+        -- HALT button pressed:
+        elseif element.name == "halt-program" then
+            local mc_state = Entity.get_data(player_data.open_microcontroller)
+            microcontroller.halt(player_data.open_microcontroller, mc_state)
+        -- STEP button pressed:
+        elseif element.name == "step-program" then
+            local mc_state = Entity.get_data(player_data.open_microcontroller)
+            element.parent.parent.error_message.caption = ""
+            microcontroller.compile(player_data.open_microcontroller, mc_state)
+            microcontroller.step(player_data.open_microcontroller, mc_state)
+        -- CLOSE button pressed:
+        elseif element.name == "close-microcontroller-window" then
+            microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.inner['program-input'].text)
+            player_data.open_microcontroller_gui.destroy();
+            player_data.open_microcontroller_gui = nil
+            if player.gui.center['mc-docs'] then
+                player.gui.center['mc-docs'].destroy()
+            end
+        -- COPY button pressed:
+        elseif element.name == "copy-program" then
+            player_data.program_clipboard = player.gui.left.microcontroller.outer.inner['program-input'].text
+        -- PASTE button pressed:
+        elseif element.name == "paste-program" and player_data.program_clipboard then
+            player_data.open_microcontroller_gui.outer.inner['program-input'].text = player_data.program_clipboard
+        -- SHOW/HIDE DOCS button pressed:
+        elseif element.name == "mc-help-button" then
+            if player.gui.screen['mc-docs'] then
+                player.gui.screen['mc-docs'].destroy()
+            else
+                local docs_frame = player.gui.screen.add{type = "frame", name = "mc-docs", caption = {"microcontroller.wiki"}}
+                docs_frame.style.maximal_width = 400
+                docs_frame.style.maximal_height = 300
+                local doc_table = docs_frame.add{type = "table", name = "mc_doc_table", vertical_centering = false, column_count = 2}
+                doc_table.style.horizontal_align = "left"
+
+                local items = {}
+                for _, doc in pairs(DOCS) do
+                    table.insert(items, {"microcontroller.doc." .. doc.name})
+                end
+                local doc_list = doc_table.add{type = "list-box", name = "mc_doc_list", items = items, selected_index = 1}
+
+                local scroll_pane = doc_table.add{type = "scroll-pane", name = "mc_scroll_pane"}
+                local topics_gui = scroll_pane.add{type = "table", name = "mc_topics_gui", column_count = 1}
+                topics_gui.style.maximal_width = 300
+                update_topics_gui(topics_gui)
+            end
         end
     end
     set_player_data(event.player_index, player_data)
@@ -339,13 +391,8 @@ function microcontrollerGui( player, entity )
     state.gui_line_numbers.style.maximal_width = 40
     updateLines(state.gui_line_numbers, state)
 
-    local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_notice_textbox"}
+    local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_program_input"}
     textbox.text = state.program_text
-    textbox.word_wrap = false
-    textbox.style.minimal_width = 260
-    textbox.style.minimal_height = 648
-    textbox.style.maximal_width = 0
-    textbox.style.horizontally_stretchable = true
     state.gui_program_input = textbox
 
     if microcontroller.is_running(entity) then
