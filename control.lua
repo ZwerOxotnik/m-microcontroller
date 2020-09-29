@@ -105,7 +105,7 @@ script.on_event({defines.events.on_entity_settings_pasted}, function(event)
     local destination = event.destination
 
     if source.name == "microcontroller" and destination.name == source.name then
-        Entity.get_data(destination).program_text = Entity.get_data(source).program_text
+        Entity.set_data(destination, Entity.get_data(source)) -- TODO: test it
     end
 end)
 

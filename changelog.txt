@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.7.3
+Date: 29. 09. 2020
+  Changes:
+    - Possibly fixed data coping (https://mods.factorio.com/mod/m-microcontroller/discussion/5f70b969cfbf9a4b0e744fbb)
+---------------------------------------------------------------------------------------------------
 Version: 0.7.1
 Date: 26. 07. 2020
   Changes:
