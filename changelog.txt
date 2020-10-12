@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.7.4
+Date: 12. 10. 2020
+  Changes:
+    - nikolateslax added a technology to MicroControllers (https://github.com/ZwerOxotnik/m-microcontroller/pull/11)
+    - Reduced size of this mod by optimizing all images
+  Notes:
+    - You need to reasearch the technology to get MicroControllers
+---------------------------------------------------------------------------------------------------
 Version: 0.7.3
 Date: 29. 09. 2020
   Changes:
