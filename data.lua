@@ -57,7 +57,8 @@ data:extend{
 				{"logistic-science-pack", 1},
 			},
 			time = 30,
-		},
+        },
+        localised_description = {"microcontroller.doc.overview_description"},
 		order = "c-g-b",
 	},
     {
