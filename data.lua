@@ -34,9 +34,36 @@ data:extend{
         subgroup = "circuit-network",
         order = 'zz'
     },
+	{
+		type = "technology",
+		name = "microcontroller",
+		icon_size = 128,
+		icon = "__m-microcontroller__/graphics/microchip_large.png",
+		effects = {
+			{
+				type = "unlock-recipe",
+				recipe = "microcontroller",
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "microcontroller-ram",
+			},
+		},
+		prerequisites = { "circuit-network", "advanced-electronics" },
+		unit = {
+			count = 250,
+			ingredients = {
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1},
+			},
+			time = 30,
+		},
+		order = "c-g-b",
+	},
     {
         type = "recipe",
         name = "microcontroller",
+		enabled = false,
         ingredients = {{"arithmetic-combinator", 3}, {"decider-combinator", 3}},
         energy_required = 1,
         results = {{"microcontroller", 1}}
@@ -44,6 +71,7 @@ data:extend{
     {
         type = "recipe",
         name = "microcontroller-ram",
+		enabled = false,
         ingredients = {{"arithmetic-combinator", 3}, {"advanced-circuit", 2}},
         energy_required = 1,
         results = {{"microcontroller-ram", 1}}
