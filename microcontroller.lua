@@ -2,10 +2,10 @@ local Compiler = require('compiler')
 local Entity = require("stdlib/entity/entity")
 require('constants')
 
-PSTATE_HALTED = 0
-PSTATE_RUNNING = 1
-PSTATE_SLEEPING = 2
-PSTATE_SYNC = 3
+local PSTATE_HALTED = 0
+local PSTATE_RUNNING = 1
+local PSTATE_SLEEPING = 2
+local PSTATE_SYNC = 3
 
 function linepairs(s)
     if s:sub(-1)~="\n" then s=s.."\n" end
