@@ -5,6 +5,7 @@ Date: 04. 01. 2021
     - Optimized gui (it doesn't affect too much on UPS now)
     - Fixed 'set' command (https://github.com/ZwerOxotnik/m-microcontroller/issues/12)
     - Improved style slightly for embed-wiki
+    - Removed example scenario temporarily
 ---------------------------------------------------------------------------------------------------
 Version: 0.7.4
 Date: 12. 10. 2020
