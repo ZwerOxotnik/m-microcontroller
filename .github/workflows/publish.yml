@@ -16,16 +16,16 @@ jobs:
       uses: JesseTG/rm@v1.0.2
       with:
         path: /.vscode
-    - name: Remove .vscode folder
+    - name: Remove .gitignore file
       uses: JesseTG/rm@v1.0.2
       with:
         path: /.gitignore
-    - name: Remove .vscode folder
+    - name: Remove .luacheckrc file
       uses: JesseTG/rm@v1.0.2
       with:
         path: /.luacheckrc
     - name: Create Factorio mod package
-        uses: Roang-zero1/factorio-mod-package@master
+      uses: Roang-zero1/factorio-mod-package@master
     - name: Publish Mod on mods.factorio.com
       uses: shanemadden/factorio-mod-portal-publish@stable
       env:
