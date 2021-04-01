@@ -1,5 +1,5 @@
 on: workflow_dispatch
-name: Publish
+name: push
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -8,24 +8,14 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
-    - name: Remove .github folder
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: /.github
     - name: Remove .vscode folder
       uses: JesseTG/rm@v1.0.2
       with:
         path: /.vscode
-    - name: Remove .gitignore file
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: /.gitignore
     - name: Remove .luacheckrc file
       uses: JesseTG/rm@v1.0.2
       with:
         path: /.luacheckrc
-    - name: Create Factorio mod package
-      uses: Roang-zero1/factorio-mod-package@master
     - name: Publish Mod on mods.factorio.com
       uses: shanemadden/factorio-mod-portal-publish@stable
       env:
