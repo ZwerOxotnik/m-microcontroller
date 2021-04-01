@@ -290,13 +290,17 @@ function signalToSpritePath(signal)
     end
 end
 
-script.on_event(defines.events.on_tick, function(event)
+local update_tick_time = settings.startup["mc_update_tick_time"].value
+script.on_nth_tick(update_tick_time, function()
     -- Ensure we have a table to store microcontrollers in the global state.
     if not global.microcontrollers then
         global.microcontrollers = {}
     end
 
-    local do_update_gui = (game.tick % 60 == 0)
+    local do_update_gui = true
+    if update_tick_time < 30 then
+        do_update_gui = (game.tick % 60 == 0)
+    end
 
     -- Iterate through all stored microcontrollers.
     for i = #global.microcontrollers, 1, -1 do
