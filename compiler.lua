@@ -278,14 +278,8 @@ local function eval( ast, control, memory, modules, program_counter, clock )
     end
     local setout = function( value )
         local params = control.parameters
-        params.parameters.first_constant = value.count
-        params.parameters.output_signal = value.signal
-        control.parameters = params
-    end
-    local setout_count = function( count )
-        local params = control.parameters
-        params.parameters.first_constant = count
-        control.parameters = params
+        params.first_constant = value.count
+        params.output_signal = value.signal
     end
     -- Multiplex Helper Functions
     local function getregister( index_expr )
@@ -306,7 +300,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
         if index_expr.location == 'mem' then
             setmem_count(index_expr, count)
         elseif index_expr.location == 'out' then
-            setout_count(count)
+            control.parameters.first_constant = count
         end
     end
     local function const_num( number )
