@@ -1,5 +1,5 @@
-on: workflow_dispatch
-name: push
+on: push
+name: Publish
 jobs:
   publish:
     runs-on: ubuntu-latest
