@@ -9,13 +9,11 @@ jobs:
       with:
         submodules: recursive
     - name: Remove .vscode folder
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: /.vscode
+        run: |
+          rm -rf /.vscode
     - name: Remove .luacheckrc file
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: /.luacheckrc
+        run: |
+          rm /.luacheckrc
     - name: Publish Mod on mods.factorio.com
       uses: shanemadden/factorio-mod-portal-publish@stable
       env:
