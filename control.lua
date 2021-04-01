@@ -160,6 +160,12 @@ local function update_topics_gui(gui)
             gui.add{type = "label", caption = {"", {"microcontroller.example"}, {"colon"}}}
             local textbox = gui.add{type = "text-box", text = topic.example}
             textbox.read_only = true
+            textbox.style.maximal_width = 0
+            textbox.style.minimal_height = 60
+            textbox.style.maximal_height = 140
+            textbox.style.horizontally_stretchable = true
+            textbox.style.vertically_stretchable = true
+            textbox.style.height = 130
         end
     end
 end
@@ -221,9 +227,12 @@ script.on_event(defines.events.on_gui_click, function(event)
                 player.gui.screen['mc-docs'].destroy()
             else
                 local docs_frame = player.gui.screen.add{type = "frame", name = "mc-docs", caption = {"microcontroller.wiki"}}
-                docs_frame.style.maximal_width = 400
+                docs_frame.style.maximal_width = 0
                 docs_frame.style.maximal_height = 300
+                docs_frame.style.horizontally_stretchable = true
                 local doc_table = docs_frame.add{type = "table", name = "mc_doc_table", vertical_centering = false, column_count = 2}
+                doc_table.style.maximal_width = 0
+                doc_table.style.horizontally_stretchable = true
                 doc_table.style.horizontal_align = "left"
 
                 local items = {}
@@ -231,10 +240,14 @@ script.on_event(defines.events.on_gui_click, function(event)
                     table.insert(items, {"microcontroller.doc." .. doc.name})
                 end
                 local doc_list = doc_table.add{type = "list-box", name = "mc_doc_list", items = items, selected_index = 1}
+                doc_list.style.maximal_width = 140
+                doc_list.style.horizontally_stretchable = true
 
                 local scroll_pane = doc_table.add{type = "scroll-pane", name = "mc_scroll_pane"}
                 local topics_gui = scroll_pane.add{type = "table", name = "mc_topics_gui", column_count = 1}
-                topics_gui.style.maximal_width = 300
+                topics_gui.style.maximal_width = 0
+                topics_gui.style.horizontally_stretchable = true
+                topics_gui.style.width = 350
                 update_topics_gui(topics_gui)
             end
         end
@@ -282,6 +295,9 @@ script.on_event(defines.events.on_tick, function(event)
     if not global.microcontrollers then
         global.microcontrollers = {}
     end
+
+    local do_update_gui = (game.tick % 60 == 0)
+
     -- Iterate through all stored microcontrollers.
     for i = #global.microcontrollers, 1, -1 do
         local mc = global.microcontrollers[i]
@@ -302,17 +318,22 @@ script.on_event(defines.events.on_tick, function(event)
                 if mc_state.gui_program_input and mc_state.gui_program_input.valid then
                     mc_state.gui_program_input.read_only = microcontroller.is_running(mc)
                 end
-                -- Update the program lines in the GUI.
-                if mc_state.gui_line_numbers and mc_state.gui_line_numbers.valid then
-                    updateLines(mc_state.gui_line_numbers, mc_state)
-                end
-                -- Update the inspector GUI.
-                if mc_state.inspector and mc_state.inspector.valid then
-                    for i = 1, 4 do
-                        mc_state.inspector['mem'..i..'-inspect'].sprite = signalToSpritePath( mc_state.memory[i].signal)
-                        mc_state.inspector['mem'..i..'-inspect'].number = mc_state.memory[i].count
+
+                if do_update_gui then
+                    -- Update the program lines in the GUI.
+                    if mc_state.gui_line_numbers and mc_state.gui_line_numbers.valid then
+                        updateLines(mc_state.gui_line_numbers, mc_state)
+                    end
+
+                    -- Update the inspector GUI.
+                    if mc_state.inspector and mc_state.inspector.valid then
+                        for i = 1, 4 do
+                            mc_state.inspector['mem'..i..'-inspect'].sprite = signalToSpritePath( mc_state.memory[i].signal)
+                            mc_state.inspector['mem'..i..'-inspect'].number = mc_state.memory[i].count
+                        end
                     end
                 end
+
                 -- Check adjacent modules still exists.
                 if mc_state.adjacent_modules ~= nil then
                     for i = 4, 1, -1 do
@@ -367,7 +388,7 @@ function microcontrollerGui( player, entity )
     end
     local state = Entity.get_data(entity)
     local player_data = get_player_data(player.index)
- 
+
     local gWindow = leftGui.add{type = "frame", name = "microcontroller", caption = "Microcontroller"}
     player_data.open_microcontroller_gui = gWindow
     local outerflow = gWindow.add{type = "flow", name = "outer", direction = "vertical"}
