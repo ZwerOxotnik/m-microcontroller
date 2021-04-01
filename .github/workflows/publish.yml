@@ -11,9 +11,6 @@ jobs:
       - name: Remove .vscode folder
         run: |
           rm -rf /.vscode
-      - name: Remove .luacheckrc file
-        run: |
-          rm /.luacheckrc
       - name: Publish Mod on mods.factorio.com
         uses: shanemadden/factorio-mod-portal-publish@stable
         env:
