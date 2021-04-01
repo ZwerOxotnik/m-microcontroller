@@ -4,18 +4,18 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository and submodules
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: Remove .vscode folder
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Remove .vscode folder
         run: |
           rm -rf /.vscode
-    - name: Remove .luacheckrc file
+      - name: Remove .luacheckrc file
         run: |
           rm /.luacheckrc
-    - name: Publish Mod on mods.factorio.com
-      uses: shanemadden/factorio-mod-portal-publish@stable
-      env:
-        FACTORIO_PASSWORD: ${{ secrets.FACTORIO_PASSWORD }}
-        FACTORIO_USER: ${{ secrets.FACTORIO_USER }}
+      - name: Publish Mod on mods.factorio.com
+        uses: shanemadden/factorio-mod-portal-publish@stable
+        env:
+          FACTORIO_PASSWORD: ${{ secrets.FACTORIO_PASSWORD }}
+          FACTORIO_USER: ${{ secrets.FACTORIO_USER }}
