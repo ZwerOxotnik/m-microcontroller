@@ -5,6 +5,7 @@
 # Git #
 #######
 *.orig
+itory
 
 # Packages #
 ############
@@ -17,7 +18,6 @@
 *.jar
 *.rar
 *.tar
-*.zip
 
 # Node & Bower & JSPM #
 #######################
