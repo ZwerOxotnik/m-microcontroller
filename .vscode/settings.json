@@ -1,12 +1,4 @@
 {
-    "auto-run-command.rules": [
-
-        {
-            "condition": "always",
-            "command": "gitlens.pullRepositories",
-            "message": "Downloading files from gits"
-        }
-    ],
     "lua.targetVersion": "5.2",
     "Lua.diagnostics.globals": [
         "global",
@@ -20,7 +12,39 @@
         "mods",
         "rendering",
         "commands",
-        "log"
+        "log",
+				"serpent"
     ],
-    "Lua.runtime.version": "Lua 5.2"
+    "Lua.runtime.version": "Lua 5.2",
+    "Lua.workspace.ignoreDir": [
+        ".vscode",
+        ".github",
+        "locale"
+    ],
+		"Lua.telemetry.enable": false,
+		"Lua.runtime.builtin": {
+			"table": "enable",
+			"math": "enable",
+			"string": "enable",
+			"package": "enable",
+			"debug": "enable",
+			"io": "disable",
+			"jit": "disable",
+			"basic": "disable",
+			"bit": "disable",
+			"bit32": "enable",
+			"builtin": "disable",
+			"coroutine": "disable",
+			"ffi": "disable",
+			"os": "disable",
+			"utf8": "disable"
+		},
+		"Lua.intelliSense.searchDepth": 3,
+		"Lua.hint.enable": true,
+		"Lua.diagnostics.workspaceDelay": 50,
+		"git.autofetch": "all",
+		"markdownlint.config": {
+			"MD033": false,
+			"MD034": false,
+		}
 }
