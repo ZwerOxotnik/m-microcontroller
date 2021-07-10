@@ -237,7 +237,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                 local items = {}
                 for _, doc in pairs(DOCS) do
-                    table.insert(items, {"microcontroller.doc." .. doc.name})
+					items[#items+1] = {"microcontroller.doc." .. doc.name}
                 end
                 local doc_list = doc_table.add{type = "list-box", name = "mc_doc_list", items = items, selected_index = 1}
                 doc_list.style.maximal_width = 140
@@ -380,7 +380,7 @@ function updateLines(element, state)
         else
             line = ' '..line
         end
-        table.insert(lines, line)
+		lines[#lines+1] = line
     end
     element.text = table.concat( lines, "\n" )
 end

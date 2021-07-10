@@ -58,6 +58,7 @@ function microcontroller.init_memory( mc, state )
 end
 
 function microcontroller.update_program_text( mc, program_text )
+	if not (mc or mc.valid) then return log("BUG?") end -- TODO: recheck
     local state = Entity.get_data(mc)
     state.program_text = program_text
     Entity.set_data(mc, state)
@@ -80,7 +81,7 @@ end
 function microcontroller.compile( mc, state )
     local program_lines = {}
     for line in linepairs(state.program_text) do
-        table.insert(program_lines, line)
+		program_lines[#program_lines+1] = line
     end
     state.program_ast = Compiler.compile(program_lines)
     Entity.set_data(mc, state)
@@ -161,7 +162,7 @@ function microcontroller.tick( mc, state )
             microcontroller.set_program_counter(mc, state, value)
         end
     end
-    
+
     -- Run microcontroller code.
     if state.program_state == PSTATE_RUNNING then
         local ast = state.program_ast[state.program_counter]
