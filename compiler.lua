@@ -2,6 +2,12 @@ require('constants')
 require('stdlib/table')
 local Entity = require('stdlib/entity/entity')
 
+
+local sub = string.sub
+local find = string.find
+local gsub = string.gsub
+
+
 -- Split a string in to tokens using whitespace as a seperator.
 local function split( str )
     local result = {}
@@ -42,11 +48,11 @@ local function parse( tokens )
     end
     local parseAddress = function(name)
         local token = consume()
-        if string.find(token, "@%d") then
-            local addr = string.gsub(token, name.."@(%d+)", "%1")
+        if find(token, "@%d") then
+            local addr = gsub(token, name.."@(%d+)", "%1")
             return {val = tonumber(addr), pointer = true}
         else
-            local index = string.gsub(token, name.."(%d+)", "%1")
+            local index = gsub(token, name.."(%d+)", "%1")
             return {val = tonumber(index), pointer = false}
         end
     end
@@ -73,27 +79,27 @@ local function parse( tokens )
 
     parseExpr = function()
         if peek() then
-            if string.sub(peek(), 1, 1) == "#" then
+            if sub(peek(), 1, 1) == "#" then
                 return OP_NOP
-            elseif string.sub(peek(), 1, 1) == ":" then
+            elseif sub(peek(), 1, 1) == ":" then
                 return parseLabel()
-            elseif string.find( peek(), "%d" ) == 1 then
+            elseif find( peek(), "%d" ) == 1 then
                 return parseNum()
-            elseif string.find(peek(), "red") then
+            elseif find(peek(), "red") then
                 return parseWire("red")
-            elseif string.find(peek(), "green") then
+            elseif find(peek(), "green") then
                 return parseWire("green")
-            elseif string.find(peek(), "mem") then
+            elseif find(peek(), "mem") then
                 return parseRegister("mem")
-            elseif string.find(peek(), "out") then
+            elseif find(peek(), "out") then
                 return parseOutput("out")
-            elseif string.find(peek(), "ipt") then
+            elseif find(peek(), "ipt") then
                 return parseReadOnlyRegister("ipt", 5)
-            elseif string.find(peek(), "cnr") then
+            elseif find(peek(), "cnr") then
                 return parseReadOnlyRegister("cnr", 6)
-            elseif string.find(peek(), "cng") then
+            elseif find(peek(), "cng") then
                 return parseReadOnlyRegister("cng", 7)
-            elseif string.find(peek(), "clk") then
+            elseif find(peek(), "clk") then
                 return parseReadOnlyRegister("clk", 8)
             else
                 return parseOp()
@@ -582,7 +588,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             assert_in_mem_or_val(_in)
             local i = memcount_or_val(_in)
             local value = getmem(const_num(1)).count
-            local digit = tonumber(string.sub(tostring(value), -i, -i))
+            local digit = tonumber(sub(tostring(value), -i, -i))
             setmem_count(const_num(1), digit)
         end,
         dis = function(_) -- DIS M/I M/I -- Set Digit (in memory1)
@@ -594,10 +600,10 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             local str_value = tostring(getmem(const_num(1)).count)
             local selector = string.len(str_value) - memcount_or_val(_in) + 1
             local digit = memcount_or_val(_out)
-            local p1 = string.sub(str_value, 1, selector-1)
-            local p2 = string.sub(str_value, selector, selector)
-            local p3 = string.sub(str_value, selector+1, -1)
-            p2 = string.sub(tostring(digit), -1)
+            local p1 = sub(str_value, 1, selector-1)
+            local p2 = sub(str_value, selector, selector)
+            local p3 = sub(str_value, selector+1, -1)
+            p2 = sub(tostring(digit), -1)
             setmem_count(const_num(1), tonumber(p1..p2..p3))
         end,
         bkr = function(_) -- BKR M/I -- Block until there are at least [a] red signals.
@@ -663,8 +669,8 @@ end
 function compiler.eval( ast, control, state )
     local status, results = pcall(eval, ast, control, state.memory, state.adjacent_modules, state.program_counter, state.clock)
     if not status then
-        local start_index = string.find(results, "@") or 1
-        results = string.sub(results, start_index+1, -1)
+        local start_index = find(results, "@") or 1
+        results = sub(results, start_index+1, -1)
     end
     return status, results
 end

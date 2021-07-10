@@ -150,10 +150,10 @@ local function update_topics_gui(gui)
     for _, topic in pairs(topics) do
         if topic.name then
             if topic.syntax then
-                local label = gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
-                local syntax_label = gui.add{type = "label", caption = {"", {"microcontroller.syntax"}, {"colon"}, " " .. topic.syntax}}
+                gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
+                gui.add{type = "label", caption = {"", {"microcontroller.syntax"}, {"colon"}, " " .. topic.syntax}}
             else
-                local label = gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
+                gui.add{type = "label", caption = {"microcontroller.topics." .. topic.name}, tooltip = {"microcontroller.topics." .. topic.name .. "_description"}}
             end
         end
         if topic.example then
@@ -410,10 +410,11 @@ function microcontrollerGui( player, entity )
     flow.style.horizontally_stretchable = true
 
     state.gui_line_numbers = flow.add{type = "text-box", style = "mc_notice_textbox", ignored_by_interaction = true}
-    state.gui_line_numbers.style.font_color = {r = 0.9, g = 0.9, b = 0.975}
-    state.gui_line_numbers.style.horizontally_stretchable = false
-    state.gui_line_numbers.style.vertically_stretchable = false
-    state.gui_line_numbers.style.maximal_width = 40
+	local style = state.gui_line_numbers.style
+    style.font_color = {r = 0.9, g = 0.9, b = 0.975}
+    style.horizontally_stretchable = false
+    style.vertically_stretchable = false
+    style.maximal_width = 40
     updateLines(state.gui_line_numbers, state)
 
     local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_program_input"}
