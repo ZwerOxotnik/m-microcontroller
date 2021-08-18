@@ -430,7 +430,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             assert_in_register(_in)
             local signal = getregister(_in)
             local wire_signal = find_signal_in_wire(wires.red, signal)
-            setmem(const_num(1), wire_signal)
+            setmem(const_num(_in.val), wire_signal)
         end,
         fig = function(_) -- FIG R -- Find (from) Green
             assert_in(_)
@@ -438,7 +438,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             assert_in_register(_in)
             local signal = getregister(_in)
             local wire_signal = find_signal_in_wire(wires.green, signal)
-            setmem(const_num(1), wire_signal)
+            setmem(const_num(_in.val), wire_signal)
         end,
         swp = function(_) -- SWP R R -- Swap
             assert_inout(_)
@@ -456,69 +456,69 @@ local function eval( ast, control, memory, modules, program_counter, clock )
         end,
         add = function(_) -- ADD M/I M/I -- Add
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) + memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) + memcount_or_val(_out))
         end,
         sub = function(_) -- SUB M/I M/I -- Subtract
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) - memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) - memcount_or_val(_out))
         end,
         mul = function(_) -- MUL M/I M/I -- Multiply
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) * memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) * memcount_or_val(_out))
         end,
         div = function(_) -- DIV M/I M/I -- Divide
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) / memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) / memcount_or_val(_out))
         end,
         mod = function(_) -- MOD M/I M/I -- Modulo
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) % memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) % memcount_or_val(_out))
         end,
         pow = function(_) -- POW M/I M/I -- Exponetiation
             local _in, _out = standard_op(_)
-            setmem_count(const_num(1), memcount_or_val(_in) ^ memcount_or_val(_out))
+            setmem_count(const_num(_in.val), memcount_or_val(_in) ^ memcount_or_val(_out))
         end,
         bnd = function(_) -- BND M/I M/I -- Bitwise AND
             local _in, _out = standard_op(_)
             local result = bit32.band(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         bor = function(_) -- BOR M/I M/I -- Bitwise OR
             local _in, _out = standard_op(_)
             local result = bit32.bor(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         bxr = function(_) -- BXR M/I M/I -- Bitwise XOR
             local _in, _out = standard_op(_)
             local result = bit32.bxor(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         bls = function(_) -- BLS M/I M/I -- Bitwise left shift
             local _in, _out = standard_op(_)
             local result = bit32.lshift(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         brs = function(_) -- BRS M/I M/I -- Bitwise right shift
             local _in, _out = standard_op(_)
             local result = bit32.rshift(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         blr = function(_) -- BLR M/I M/I -- Bitwise left rotate
             local _in, _out = standard_op(_)
             local result = bit32.lrotate(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         brr = function(_) -- BRR M/I M/I -- Bitwise right rotate
             local _in, _out = standard_op(_)
             local result = bit32.rrotate(memcount_or_val(_in), memcount_or_val(_out))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         bno = function(_) -- BNO M/I M/I -- Bitwise NOT
             assert_in(_)
             local _in = _[1]
             assert_in_mem_or_val(_in)
             local result = bit32.bnot(memcount_or_val(_in))
-            setmem_count(const_num(1), result)
+            setmem_count(const_num(_in.val), result)
         end,
         slp = function(_) -- SLP M/I -- Sleep
             assert_in(_)
@@ -588,9 +588,9 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             local _in = _[1]
             assert_in_mem_or_val(_in)
             local i = memcount_or_val(_in)
-            local value = getmem(const_num(1)).count
+            local value = getmem(const_num(_in.val)).count
             local digit = tonumber(sub(tostring(value), -i, -i))
-            setmem_count(const_num(1), digit)
+            setmem_count(const_num(_in.val), digit)
         end,
         dis = function(_) -- DIS M/I M/I -- Set Digit (in memory1)
             assert_inout(_)
@@ -598,14 +598,14 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             assert_in_mem_or_val(_in)
             local _out = _[2]
             assert_out_mem_or_val(_out)
-            local str_value = tostring(getmem(const_num(1)).count)
+            local str_value = tostring(getmem(const_num(_in.val)).count)
             local selector = string.len(str_value) - memcount_or_val(_in) + 1
             local digit = memcount_or_val(_out)
             local p1 = sub(str_value, 1, selector-1)
             local p2 = sub(str_value, selector, selector)
             local p3 = sub(str_value, selector+1, -1)
             p2 = sub(tostring(digit), -1)
-            setmem_count(const_num(1), tonumber(p1..p2..p3))
+            setmem_count(const_num(_in.val), tonumber(p1..p2..p3))
         end,
         bkr = function(_) -- BKR M/I -- Block until there are at least [a] red signals.
             assert_in(_)
