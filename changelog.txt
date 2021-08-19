@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.10.6
+Date: 19. 08. 2021
+  Changes:
+    - Changed examples in the scenario
+    - Changed positions of output for:
+    - [add|mul|bnd|bor|bxr|bls|brs|blr|brr|bno] N memN
+---------------------------------------------------------------------------------------------------
 Version: 0.10.5
 Date: 19. 08. 2021
   Bugfixes:
