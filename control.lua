@@ -331,7 +331,7 @@ script.on_nth_tick(update_tick_time, function()
 
                     -- Update the inspector GUI.
                     if mc_state.inspector and mc_state.inspector.valid then
-                        for i = 1, 4 do
+                        for i = 1, 4 do -- TODO: check with various entites
                             mc_state.inspector['mem'..i..'-inspect'].sprite = signalToSpritePath( mc_state.memory[i].signal)
                             mc_state.inspector['mem'..i..'-inspect'].number = mc_state.memory[i].count
                         end
