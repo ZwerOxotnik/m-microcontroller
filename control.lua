@@ -237,7 +237,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                 local items = {}
                 for _, doc in pairs(DOCS) do
-					items[#items+1] = {"microcontroller.doc." .. doc.name}
+                    items[#items+1] = {"microcontroller.doc." .. doc.name}
                 end
                 local doc_list = doc_table.add{type = "list-box", name = "mc_doc_list", items = items, selected_index = 1}
                 doc_list.style.maximal_width = 140
@@ -380,7 +380,7 @@ function updateLines(element, state)
         else
             line = ' '..line
         end
-		lines[#lines+1] = line
+        lines[#lines+1] = line
     end
     element.text = table.concat( lines, "\n" )
 end
@@ -412,7 +412,7 @@ function microcontrollerGui( player, entity )
     flow.style.horizontally_stretchable = true
 
     state.gui_line_numbers = flow.add{type = "text-box", style = "mc_notice_textbox", ignored_by_interaction = true}
-	local style = state.gui_line_numbers.style
+    local style = state.gui_line_numbers.style
     style.font_color = {r = 0.9, g = 0.9, b = 0.975}
     style.horizontally_stretchable = false
     style.vertically_stretchable = false
@@ -448,3 +448,22 @@ function microcontrollerGui( player, entity )
     Entity.set_data(entity, state)
     set_player_data(player.index, player_data)
 end
+
+script.on_configuration_changed(function(event)
+    local mod_changes = event.mod_changes["m-microcontroller"]
+    if not (mod_changes and mod_changes.old_version) then return end
+
+	local version = tonumber(string.gmatch(mod_changes.old_version, "0.%d+")())
+    if version <= 0.9 then
+        for _, mc in pairs(global.microcontrollers) do
+            if mc.valid then
+                local control_behavior = mc.get_control_behavior()
+                if control_behavior.parameters.second_constant == 0 then
+                    local params = table.deepcopy(control_behavior.parameters) -- it worked before without this
+                    params.second_constant = 1
+                    control_behavior.parameters = params
+                end
+            end
+        end
+    end
+end)
