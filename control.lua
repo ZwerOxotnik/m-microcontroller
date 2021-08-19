@@ -114,7 +114,7 @@ script.on_event("microcontroller-close", function(event)
     local player = game.players[event.player_index]
     local player_data = get_player_data(event.player_index)
     if player_data.open_microcontroller_gui then
-        microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.inner['program-input'].text)
+        microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.scroll_pane.inner['program-input'].text)
         player_data.open_microcontroller_gui.destroy()
         player_data.open_microcontroller_gui = nil
     end
@@ -209,7 +209,7 @@ script.on_event(defines.events.on_gui_click, function(event)
             microcontroller.step(player_data.open_microcontroller, mc_state)
         -- CLOSE button pressed:
         elseif element.name == "close-microcontroller-window" then
-            microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.inner['program-input'].text)
+            microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.scroll_pane.inner['program-input'].text)
             player_data.open_microcontroller_gui.destroy();
             player_data.open_microcontroller_gui = nil
             if player.gui.center['mc-docs'] then
@@ -217,10 +217,10 @@ script.on_event(defines.events.on_gui_click, function(event)
             end
         -- COPY button pressed:
         elseif element.name == "copy-program" then
-            player_data.program_clipboard = player.gui.left.microcontroller.outer.inner['program-input'].text
+            player_data.program_clipboard = player.gui.left.microcontroller.outer.scroll_pane.inner['program-input'].text
         -- PASTE button pressed:
         elseif element.name == "paste-program" and player_data.program_clipboard then
-            player_data.open_microcontroller_gui.outer.inner['program-input'].text = player_data.program_clipboard
+            player_data.open_microcontroller_gui.outer.scroll_pane.inner['program-input'].text = player_data.program_clipboard
         -- SHOW/HIDE DOCS button pressed:
         elseif element.name == "mc-help-button" then
             if player.gui.screen['mc-docs'] then
@@ -395,9 +395,9 @@ function microcontrollerGui( player, entity )
 
     local gWindow = leftGui.add{type = "frame", name = "microcontroller", caption = "Microcontroller"}
     player_data.open_microcontroller_gui = gWindow
-    local outerflow = gWindow.add{type = "flow", name = "outer", direction = "vertical"}
+    local outerflow = gWindow.add{type = "table", name = "outer", column_count = 1}
 
-    local buttons_row = outerflow.add{type = "flow", name = "buttons_row", direction = "horizontal"}
+    local buttons_row = outerflow.add{type = "flow", name = "buttons_row", column_count = 1}
     state.gui_run_button = buttons_row.add{type = "sprite-button", name = "run-program", sprite = "microcontroller-play-sprite"}
     state.gui_step_button = buttons_row.add{type = "sprite-button", name = "step-program", sprite = "microcontroller-next-sprite"}
     state.gui_halt_button = buttons_row.add{type = "sprite-button", name = "halt-program", sprite = "microcontroller-stop-sprite"}
@@ -406,7 +406,9 @@ function microcontrollerGui( player, entity )
     state.help_button = buttons_row.add{type = "button", name = "mc-help-button", caption = "?"}
     state.gui_exit_button = buttons_row.add{type = "sprite-button", name = "close-microcontroller-window", sprite = "microcontroller-exit-sprite"}
 
-    local flow = outerflow.add{type = "flow", name = "inner", direction = "horizontal"}
+    local scroll_pane = outerflow.add{type = "scroll-pane", name = "scroll_pane"}
+    scroll_pane.style.maximal_height = 455
+    local flow = scroll_pane.add{type = "table", name = "inner", column_count = 2}
     flow.style.horizontally_stretchable = true
 
     state.gui_line_numbers = flow.add{type = "text-box", style = "mc_notice_textbox", ignored_by_interaction = true}
