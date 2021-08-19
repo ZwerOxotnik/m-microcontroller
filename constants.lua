@@ -63,14 +63,14 @@ JMP M/I/L   : Jump to line [A] or label.
 HLT         : Halt the program.
 NOP         : No Operation.
 --- Arithmetic Op Codes:
-All arithmetic ops ignore type, type in mem1 is preserved.
-ADD M/I M/I : Add [A] + [B], store result in mem1.
-SUB M/I M/I : Subtract [A] - [B], store result in mem1.
-MUL M/I M/I : Multiply [A] * [B], store result in mem1.
-DIV M/I M/I : Divide [A] / [B], store result in mem1.
-MOD M/I M/I : Modulo [A] % [B], store result in mem1.
-POW M/I M/I : Raise [A] to power of [B], store result in mem1.
-DIG M/I     : Gets the [A]th digit from mem1, store result in mem1.
+All arithmetic ops ignore type, type in memN is preserved.
+ADD M/I M/I : Add [A] + [B], store result in memN.
+SUB M/I M/I : Subtract [A] - [B], store result in memN.
+MUL M/I M/I : Multiply [A] * [B], store result in memN.
+DIV M/I M/I : Divide [A] / [B], store result in memN.
+MOD M/I M/I : Modulo [A] % [B], store result in memN.
+POW M/I M/I : Raise [A] to power of [B], store result in memN.
+DIG M/I     : Gets the [A]th digit from mem1, store result in memN.
 DIS M/I M/I : Sets the [A]th digit from mem1 to the 1st digit from [B].
 BND M/I M/I : Bitwise [A] AND [B]
 BOR M/I M/I : Bitwise [A] OR [B]
@@ -135,8 +135,8 @@ local BIS_DESCRIPTION = [[
 local BIS_DESCRIPTION = [[
 <:I> specifies a parameter that takes a literal integer.
 <:R> specifies a parameter that takes a register address.
-<:W> specifies a parameter that takes a register address.
-<:L> specifies a parameter that takes a register address.
+<:W> specifies a parameter that takes a wire Input address.
+<:L> specifies a parameter that takes a label.
 ]]
 
 local EXAMPLE1 = ":LOOP\njmp :LOOP"
