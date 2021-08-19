@@ -27,14 +27,12 @@ function microcontroller.init( mc, state )
 
     local control = mc.get_or_create_control_behavior()
     control.parameters = {
-        parameters = {
-            first_signal = nil,
-            second_signal = nil,
-            first_constant = 0,
-            second_constant = 1,
-            operation = "*",
-            output_signal = NULL_SIGNAL.signal
-        }
+		first_signal = nil,
+		second_signal = nil,
+		first_constant = 0,
+		second_constant = 1,
+		operation = "*",
+		output_signal = NULL_SIGNAL.signal
     }
     microcontroller.init_memory(mc, state)
 end
