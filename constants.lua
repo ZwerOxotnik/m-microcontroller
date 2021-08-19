@@ -132,7 +132,6 @@ jmp :LOOP
 ]]
 
 local BIS_DESCRIPTION = [[
-local BIS_DESCRIPTION = [[
 <:I> specifies a parameter that takes a literal integer.
 <:R> specifies a parameter that takes a register address.
 <:W> specifies a parameter that takes a wire Input address.
