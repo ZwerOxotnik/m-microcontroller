@@ -1,13 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.10.1
+Date: 19. 08. 2021
+  Changes:
+    - Improved documentation
+---------------------------------------------------------------------------------------------------
 Version: 0.10.0
 Date: 19. 08. 2021
   Bugfixes:
-    - Fixed old MicroControllers
+    - Fixed data of old MicroControllers
 ---------------------------------------------------------------------------------------------------
 Version: 0.9.7
 Date: 19. 08. 2021
   Bugfixes:
-    - Fixed data of MicroControllers! (currently not affect old MicroControllers!)
+    - Fixed data of MicroControllers!
 ---------------------------------------------------------------------------------------------------
 Version: 0.9.6
 Date: 19. 08. 2021
