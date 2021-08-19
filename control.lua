@@ -453,7 +453,7 @@ script.on_configuration_changed(function(event)
     local mod_changes = event.mod_changes["m-microcontroller"]
     if not (mod_changes and mod_changes.old_version) then return end
 
-	local version = tonumber(string.gmatch(mod_changes.old_version, "0.%d+")())
+	local version = tonumber(string.gmatch(mod_changes.old_version, "%d+.%d+")())
     if version <= 0.9 then
         for _, mc in pairs(global.microcontrollers) do
             if mc.valid then
