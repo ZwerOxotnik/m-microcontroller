@@ -286,7 +286,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
         local params = table.deepcopy(control.parameters) -- it worked before without this
         params.first_constant = value.count
         params.output_signal = value.signal
-		control.parameters = params
+        control.parameters = params
     end
     -- Multiplex Helper Functions
     local function getregister( index_expr )
