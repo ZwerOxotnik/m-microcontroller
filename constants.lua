@@ -70,7 +70,7 @@ MUL M/I M/I : Multiply [A] * [B], store result in memN.
 DIV M/I M/I : Divide [A] / [B], store result in memN.
 MOD M/I M/I : Modulo [A] % [B], store result in memN.
 POW M/I M/I : Raise [A] to power of [B], store result in memN.
-DIG M/I     : Gets the [A]th digit from mem1, store result in memN.
+DIG M/I     : Gets the [A]th digit from mem1, store result in mem1.
 DIS M/I M/I : Sets the [A]th digit from mem1 to the 1st digit from [B].
 BND M/I M/I : Bitwise [A] AND [B]
 BOR M/I M/I : Bitwise [A] OR [B]
