@@ -142,7 +142,13 @@ data:extend{
         width = 32,
         height = 32
     },
-
+    {
+        type = "sprite",
+        name = "microcontroller-info-sprite",
+        filename = "__m-microcontroller__/graphics/info.png",
+        width = 32,
+        height = 32
+    },
     {
         type = "virtual-signal",
         name = "signal-mc-halt",

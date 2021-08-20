@@ -412,7 +412,7 @@ function microcontrollerGui( player, entity )
     state.gui_halt_button = buttons_row.add{type = "sprite-button", name = "halt-program", sprite = "microcontroller-stop-sprite"}
     state.gui_copy_button = buttons_row.add{type = "sprite-button", name = "copy-program", sprite = "microcontroller-copy-sprite"}
     state.gui_paste_button = buttons_row.add{type = "sprite-button", name = "paste-program", sprite = "microcontroller-paste-sprite"}
-    state.help_button = buttons_row.add{type = "button", name = "mc-help-button", caption = "?"}
+    buttons_row.add{type = "sprite-button", name = "mc-help-button", sprite = "microcontroller-info-sprite"}
     state.gui_exit_button = buttons_row.add{type = "sprite-button", name = "close-microcontroller-window", sprite = "microcontroller-exit-sprite"}
 
     local scroll_pane = outerflow.add{type = "scroll-pane", name = "scroll_pane"}
