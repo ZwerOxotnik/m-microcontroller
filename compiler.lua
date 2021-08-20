@@ -11,8 +11,8 @@ local gsub = string.gsub
 -- Split a string in to tokens using whitespace as a seperator.
 local function split( str )
     local result = {}
-    for sub in string.gmatch( str, "%S+" ) do
-        table.insert( result, sub )
+    for _sub in string.gmatch( str, "%S+" ) do
+        table.insert( result, _sub )
     end
     return result
 end
@@ -518,7 +518,7 @@ local function eval( ast, control, memory, modules, program_counter, clock )
             local _in = _[1]
             assert_in_mem_or_val(_in)
             local result = bit32.bnot(memcount_or_val(_in))
-            setmem_count(const_num(_out.val), result)
+            setmem_count(const_num(_in.val), result)
         end,
         slp = function(_) -- SLP M/I -- Sleep
             assert_in(_)

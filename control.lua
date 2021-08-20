@@ -22,14 +22,18 @@ function set_player_data(player_index, data)
 end
 
 -- Handle MicroController OPEN event.
-script.on_event("microcontroller-open", function(event)
-    local player = game.players[event.player_index]
+script.on_event("open-gui", function(event)
+	local player_index = event.player_index
+    local player = game.get_player(player_index)
+	if not (player and player.valid) then return end
     local entity = player.selected
-    if entity and entity.name == "microcontroller" then
+	if not (entity and entity.valid) then return end
+
+    if entity.name == "microcontroller" then
         entity.operable = false
-        local player_data = get_player_data(event.player_index)
+        local player_data = get_player_data(player_index)
         player_data.open_microcontroller = entity
-        set_player_data(event.player_index, player_data)
+        set_player_data(player_index, player_data)
         microcontrollerGui(player, entity)
     end
 end)
@@ -111,17 +115,21 @@ end)
 
 -- Handle MicroController GUI Close event.
 script.on_event("microcontroller-close", function(event)
-    local player = game.players[event.player_index]
-    local player_data = get_player_data(event.player_index)
+	local player_index = event.player_index
+    local player = game.get_player(player_index)
+	if not (player and player.valid) then return end
+
+    local player_data = get_player_data(player_index)
     if player_data.open_microcontroller_gui then
         microcontroller.update_program_text(player_data.open_microcontroller, player_data.open_microcontroller_gui.outer.scroll_pane.inner['program-input'].text)
         player_data.open_microcontroller_gui.destroy()
         player_data.open_microcontroller_gui = nil
     end
-    if player.gui.center['mc-docs'] then
-        player.gui.center['mc-docs'].destroy()
+	local docs = player.gui.center['mc-docs']
+    if docs then
+        docs.destroy()
     end
-    set_player_data(event.player_index, player_data)
+    set_player_data(player_index, player_data)
 end)
 
 -- Handle GUI text changed event.
@@ -160,12 +168,13 @@ local function update_topics_gui(gui)
             gui.add{type = "label", caption = {"", {"microcontroller.example"}, {"colon"}}}
             local textbox = gui.add{type = "text-box", text = topic.example}
             textbox.read_only = true
-            textbox.style.maximal_width = 0
-            textbox.style.minimal_height = 60
-            textbox.style.maximal_height = 140
-            textbox.style.horizontally_stretchable = true
-            textbox.style.vertically_stretchable = true
-            textbox.style.height = 130
+			local style = textbox.style
+            style.maximal_width = 0
+            style.minimal_height = 60
+            style.maximal_height = 140
+            style.horizontally_stretchable = true
+            style.vertically_stretchable = true
+            style.height = 130
         end
     end
 end
@@ -174,7 +183,7 @@ end
 
 -- Handle selection in GUI.
 script.on_event(defines.events.on_gui_selection_state_changed, function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     if not (player and player.valid) then return end
     local element = event.element
     if not (element and element.valid and element.name) then return end
@@ -186,10 +195,10 @@ end)
 
 -- Handle GUI button presses.
 script.on_event(defines.events.on_gui_click, function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     if not (player and player.valid) then return end
-    local player_data = get_player_data(event.player_index)
     local element = event.element
+    local player_data = get_player_data(event.player_index)
     if element and element.valid and element.name then
         -- RUN button pressed:
         if element.name == "run-program" then
@@ -282,7 +291,7 @@ script.on_event(microcontroller.event_halt, function(event)
     end
 end)
 
-function signalToSpritePath(signal)
+local function signalToSpritePath(signal)
     if signal.type == "virtual" then
         return "virtual-signal/" .. signal.name
     else

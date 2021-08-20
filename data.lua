@@ -2,6 +2,15 @@ require('stdlib/table')
 require('constants')
 require('prototypes/style')
 
+if data.raw["custom-input"]["open-gui"] == nil then
+    data.raw["custom-input"]["open-gui"] = {
+        type = "custom-input",
+        name = "open-gui",
+        key_sequence = "",
+        linked_game_control = "open-gui"
+    }
+end
+
 data:extend{
     table.merge(table.deepcopy(data.raw['arithmetic-combinator']['arithmetic-combinator']), {
         name = "microcontroller",
@@ -34,37 +43,37 @@ data:extend{
         subgroup = "circuit-network",
         order = 'zz'
     },
-	{
-		type = "technology",
-		name = "microcontroller",
-		icon_size = 128,
-		icon = "__m-microcontroller__/graphics/microchip_large.png",
-		effects = {
-			{
-				type = "unlock-recipe",
-				recipe = "microcontroller",
-			},
-			{
-				type = "unlock-recipe",
-				recipe = "microcontroller-ram",
-			},
-		},
-		prerequisites = { "circuit-network", "advanced-electronics" },
-		unit = {
-			count = 250,
-			ingredients = {
-				{"automation-science-pack", 1},
-				{"logistic-science-pack", 1},
-			},
-			time = 30,
+    {
+        type = "technology",
+        name = "microcontroller",
+        icon_size = 128,
+        icon = "__m-microcontroller__/graphics/microchip_large.png",
+        effects = {
+            {
+                type = "unlock-recipe",
+                recipe = "microcontroller",
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "microcontroller-ram",
+            },
+        },
+        prerequisites = { "circuit-network", "advanced-electronics" },
+        unit = {
+            count = 250,
+            ingredients = {
+                {"automation-science-pack", 1},
+                {"logistic-science-pack", 1},
+            },
+            time = 30,
         },
         localised_description = {"microcontroller.doc.overview_description"},
-		order = "c-g-b",
-	},
+        order = "c-g-b",
+    },
     {
         type = "recipe",
         name = "microcontroller",
-		enabled = false,
+        enabled = false,
         ingredients = {{"arithmetic-combinator", 3}, {"decider-combinator", 3}},
         energy_required = 1,
         results = {{"microcontroller", 1}}
@@ -72,15 +81,10 @@ data:extend{
     {
         type = "recipe",
         name = "microcontroller-ram",
-		enabled = false,
+        enabled = false,
         ingredients = {{"arithmetic-combinator", 3}, {"advanced-circuit", 2}},
         energy_required = 1,
         results = {{"microcontroller-ram", 1}}
-    },
-    {
-        type = "custom-input",
-        name = "microcontroller-open",
-        key_sequence = "mouse-button-1",
     },
     {
         type = "custom-input",
@@ -217,7 +221,7 @@ for i = 1, MC_LINES do
             width = 42,
             height = h,
             x = 84,
-            y = y   
+            y = y
         }
     }
 end
