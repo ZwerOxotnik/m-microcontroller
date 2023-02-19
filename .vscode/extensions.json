@@ -2,10 +2,14 @@
   "recommendations": [
     "eamodio.gitlens",
     "justarandomgeek.factoriomod-debug",
-    "coenraads.bracket-pair-colorizer-2",
     "sumneko.lua",
     "davidanson.vscode-markdownlint",
     "editorconfig.editorconfig",
-    "lextudio.restructuredtext"
+    "lextudio.restructuredtext",
+    "koihik.vscode-lua-format",
+    "mads-hartmann.bash-ide-vscode",
+    "ms-vscode-remote.remote-wsl",
+    "formulahendry.code-runner",
+    "gruntfuggly.triggertaskonsave"
   ]
 }

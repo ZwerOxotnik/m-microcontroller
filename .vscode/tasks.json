@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "zip mod",
+			"type": "shell",
+			"command": "bash",
+			"args": [".scripts/zip_mod.sh"],
+			"group": "build",
+			"presentation": {
+				"reveal": "silent",
+			}
+		},
+		{
+			"label": "Luacheck",
+			"type": "shell",
+			"command": "luacheck",
+			"args": ["${file}"],
+			"group": "test"
+		},
+	]
+}

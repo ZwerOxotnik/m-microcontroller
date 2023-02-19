@@ -2,6 +2,8 @@ name: Auto publish
 
 on:
   push:
+    paths:
+      - 'info.json' # Triggers only if the mod info file is updated
     branches:
       - main
 
@@ -10,15 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository and submodules
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: get version
-      id: version
-      uses: notiz-dev/github-action-json-property@release
-      with:
-        path: 'info.json'
-        prop_path: 'version'
     - name: get factorio_version
       id: factorio_version
       uses: notiz-dev/github-action-json-property@release
@@ -31,24 +27,18 @@ jobs:
       with:
         path: 'info.json'
         prop_path: 'name'
+    - name: Zip mod
+      run: bash ./.scripts/zip_mod.sh
+    - name: Upload the mod on mods.factorio.com
+      env:
+        FACTORIO_MOD_API_KEY: ${{ secrets.FACTORIO_MOD_API_KEY }}
+      run: bash ./.scripts/upload.sh
     - uses: marvinpinto/action-automatic-releases@latest
       id: aar
       with:
-        automatic_release_tag: "${{steps.version.outputs.prop}}"
+        automatic_release_tag: "${{steps.factorio_version.outputs.prop}}"
         title: "For factorio ${{steps.factorio_version.outputs.prop}}"
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
-    - name: Download the file
-      uses: suisei-cn/actions-download-file@v1
-      id: downloadfile  # Remember to give an ID if you need the output
-      with:
-        url: https://github.com/${{github.repository}}/archive/refs/tags/${{steps.aar.outputs.automatic_releases_tag}}.zip
-        target: temp/
-    - run: cd temp && mv ${{steps.aar.outputs.automatic_releases_tag}}.zip ${{steps.mod_name.outputs.prop}}_${{steps.aar.outputs.automatic_releases_tag}}.zip
-    - uses: TGNThump/factorio-publish-mod-action@v1
-      with:
-        mod_portal_username: ${{ secrets.FACTORIO_USER }}
-        mod_portal_password: ${{ secrets.FACTORIO_PASSWORD }}
-        mod_name: ${{steps.mod_name.outputs.prop}}
-        asset_path: ./temp/${{steps.mod_name.outputs.prop}}_${{steps.aar.outputs.automatic_releases_tag}}.zip
-        asset_name: ${{steps.aar.outputs.automatic_releases_tag}}
+        files: |
+          ./${{steps.mod_name.outputs.prop}}_${{steps.version.outputs.prop}}.zip
