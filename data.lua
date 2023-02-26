@@ -89,6 +89,52 @@ data:extend{
     {type = "font", name = "default-mono", from = "default-mono", size = 16}
 }
 
+local function gen_tech(no,nb_packs_type,nb_packs,time,prerequisites)
+    local ingredients = {
+      {"automation-science-pack", 1},
+      {"logistic-science-pack", 1},
+      {"chemical-science-pack", 1},
+      {"production-science-pack", 1},
+      {"utility-science-pack", 1},
+      {"space-science-pack", 1}
+    }
+    while(#ingredients > nb_packs_type) do
+        table.remove(ingredients,#ingredients)
+    end
+    local unit={
+        count=nb_packs,
+        time=time,
+        ingredients=ingredients
+    }
+    local name="microcontroller-program-size-" .. no
+    local order="c-g-b-" .. string.char(96+no)
+    if no>1 then
+        table.insert(prerequisites,"microcontroller-program-size-" .. (no-1))
+    end
+    return {
+        type = "technology",
+        name = name,
+        icon_size=128,
+        icon="__m-microcontroller__/graphics/microchip_large.png",
+        prerequisites = prerequisites,
+        effects = {},
+        unit = unit,
+        order = order
+    }
+end
+
+local infinite_tech=gen_tech(4,6,0,60,{"space-science-pack"})
+infinite_tech.unit.count_formula="(L-3)*1000"
+infinite_tech.unit.count=nil
+infinite_tech.max_level="infinite"
+infinite_tech.upgrade="true"
+data:extend{
+    gen_tech(1,3,300,40,{"microcontroller","chemical-science-pack"}),
+    gen_tech(2,4,500,45,{"production-science-pack"}),
+    gen_tech(3,5,750,50,{"utility-science-pack"}),
+    infinite_tech
+}
+
 data:extend{
     {
         type = "sprite",
@@ -176,44 +222,3 @@ data:extend{
         order = "c[microcntroller]-[E]"
     }
 }
-
-for i = 1, MC_LINES do
-    local y = (i-1) * 21
-    if i >= 11 then
-        y = y - 1
-    end
-    local h = 21
-    data:extend{
-        {
-            type = "sprite",
-            name = "microcontroller-line-sprite-default-" .. i,
-            filename = "__m-microcontroller__/graphics/lines.png",
-            width = 42,
-            height = h,
-            x = 0,
-            y = y
-        }
-    }
-    data:extend{
-        {
-            type = "sprite",
-            name = "microcontroller-line-sprite-active-" .. i,
-            filename = "__m-microcontroller__/graphics/lines.png",
-            width = 42,
-            height = h,
-            x = 42,
-            y = y
-        }
-    }
-    data:extend{
-        {
-            type = "sprite",
-            name = "microcontroller-line-sprite-error-" .. i,
-            filename = "__m-microcontroller__/graphics/lines.png",
-            width = 42,
-            height = h,
-            x = 84,
-            y = y
-        }
-    }
-end
