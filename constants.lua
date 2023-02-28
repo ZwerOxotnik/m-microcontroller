@@ -5,7 +5,6 @@ STEP_SIGNAL = {signal = { type = "virtual", name = "signal-mc-step"}, count = 1}
 SLEEP_SIGNAL = {signal = { type = "virtual", name = "signal-mc-sleep"}, count = 1}
 JUMP_SIGNAL = {signal = { type = "virtual", name = "signal-mc-jump"}, count = 1}
 OP_NOP = {type = 'nop'}
-MC_LINES = 32
 
 -- {type = "instruction", name = ""}
 -- {type = "description", name = "", with_example = true}

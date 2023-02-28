@@ -23,11 +23,11 @@ end
 
 -- Handle MicroController OPEN event.
 script.on_event("open-gui", function(event)
-	local player_index = event.player_index
+    local player_index = event.player_index
     local player = game.get_player(player_index)
-	if not (player and player.valid) then return end
+    if not (player and player.valid) then return end
     local entity = player.selected
-	if not (entity and entity.valid) then return end
+    if not (entity and entity.valid) then return end
 
     if entity.name == "microcontroller" then
         entity.operable = false
@@ -115,9 +115,9 @@ end)
 
 -- Handle MicroController GUI Close event.
 script.on_event("microcontroller-close", function(event)
-	local player_index = event.player_index
+    local player_index = event.player_index
     local player = game.get_player(player_index)
-	if not (player and player.valid) then return end
+    if not (player and player.valid) then return end
 
     local player_data = get_player_data(player_index)
     if player_data.open_microcontroller_gui then
@@ -125,7 +125,7 @@ script.on_event("microcontroller-close", function(event)
         player_data.open_microcontroller_gui.destroy()
         player_data.open_microcontroller_gui = nil
     end
-	local docs = player.gui.center['mc-docs']
+    local docs = player.gui.center['mc-docs']
     if docs then
         docs.destroy()
     end
@@ -138,8 +138,9 @@ script.on_event(defines.events.on_gui_text_changed, function(event)
     local element = event.element
     if element.name and element.name == "program-input" then
         local lines = string.split(element.text, '\n', false)
-        if #lines > MC_LINES then
-            for i = 1, #lines - MC_LINES do
+        local mc_lines=microcontroller.get_max_lines(game.players[event.player_index].force)
+        if #lines > mc_lines then
+            for i = 1, #lines - mc_lines do
                 table.remove(lines, #lines)
             end
             element.text = table.concat(lines, '\n')
@@ -168,7 +169,7 @@ local function update_topics_gui(gui)
             gui.add{type = "label", caption = {"", {"microcontroller.example"}, {"colon"}}}
             local textbox = gui.add{type = "text-box", text = topic.example}
             textbox.read_only = true
-			local style = textbox.style
+            local style = textbox.style
             style.maximal_width = 0
             style.minimal_height = 60
             style.maximal_height = 140
@@ -335,7 +336,7 @@ script.on_nth_tick(update_tick_time, function()
                 if do_update_gui then
                     -- Update the program lines in the GUI.
                     if mc_state.gui_line_numbers and mc_state.gui_line_numbers.valid then
-                        updateLines(mc_state.gui_line_numbers, mc_state)
+                        updateLines(mc_state.gui_line_numbers, mc_state, mc.force)
                     end
 
                     -- Update the inspector GUI.
@@ -377,9 +378,9 @@ script.on_nth_tick(update_tick_time, function()
     end
 end)
 
-function updateLines(element, state)
+function updateLines(element, state, force)
     local lines = {}
-    for i = 1, MC_LINES do
+    for i = 1, microcontroller.get_max_lines(force) do
         local line = tostring(i)
         if i < 10 then line = "0"..i end
         if i == state.error_line then
@@ -426,7 +427,7 @@ function microcontrollerGui( player, entity )
     style.horizontally_stretchable = false
     style.vertically_stretchable = false
     style.maximal_width = 40
-    updateLines(state.gui_line_numbers, state)
+    updateLines(state.gui_line_numbers, state, player.force)
 
     local textbox = flow.add{type = "text-box", name = "program-input", style = "mc_program_input"}
     textbox.text = state.program_text
@@ -462,7 +463,7 @@ script.on_configuration_changed(function(event)
     local mod_changes = event.mod_changes["m-microcontroller"]
     if not (mod_changes and mod_changes.old_version) then return end
 
-	local version = tonumber(string.gmatch(mod_changes.old_version, "%d+.%d+")())
+    local version = tonumber(string.gmatch(mod_changes.old_version, "%d+.%d+")())
     if version <= 0.9 then
         for _, mc in pairs(global.microcontrollers) do
             if mc.valid then

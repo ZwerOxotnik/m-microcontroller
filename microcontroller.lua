@@ -55,6 +55,18 @@ function microcontroller.init_memory( mc, state )
     end
 end
 
+function microcontroller.get_max_lines(force)
+	local techs=force.technologies
+	local result=0
+	if techs["microcontroller"].researched then result = 32 end
+	if techs["microcontroller-program-size-1"].researched then result=48 end
+	if techs["microcontroller-program-size-2"].researched then result=64 end
+	if techs["microcontroller-program-size-3"].researched then
+		result = techs["microcontroller-program-size-4"].level*16 + 16
+	end
+	return result
+end
+
 function microcontroller.update_program_text( mc, program_text )
 	if not (mc or mc.valid) then return log("BUG?") end -- TODO: recheck
     local state = Entity.get_data(mc)
