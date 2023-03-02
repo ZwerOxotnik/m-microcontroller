@@ -1,8 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.11.0
+Date: 03. 02. 2023
+  Locale:
+    - Added French translation (contributed by https://github.com/XZ1048576 )
+  Features:
+    - Added technologies to increase maximum progamm size for MicroControllers (contributed by https://github.com/XZ1048576 )
+---------------------------------------------------------------------------------------------------
 Version: 0.10.10
 Date: 19. 02. 2023
   Locale:
-    - Added Ukrainian translation (thanks to @Met_en_Bouldry on crowdin)
+    - Added Ukrainian translation (contributed by @Met_en_Bouldry on crowdin)
 ---------------------------------------------------------------------------------------------------
 Version: 0.10.9
 Date: 24. 08. 2021
