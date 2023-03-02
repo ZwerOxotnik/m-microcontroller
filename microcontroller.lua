@@ -57,14 +57,14 @@ end
 
 function microcontroller.get_max_lines(force)
 	local techs=force.technologies
-	local result=0
-	if techs["microcontroller"].researched then result = 32 end
-	if techs["microcontroller-program-size-1"].researched then result=48 end
-	if techs["microcontroller-program-size-2"].researched then result=64 end
 	if techs["microcontroller-program-size-3"].researched then
-		result = techs["microcontroller-program-size-4"].level*16 + 16
+		return techs["microcontroller-program-size-4"].level*16 + 16
+	elseif techs["microcontroller-program-size-2"].researched then
+		return 64
+	elseif techs["microcontroller-program-size-1"].researched then
+		return 48
 	end
-	return result
+	return 32
 end
 
 function microcontroller.update_program_text( mc, program_text )
