@@ -1,6 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.11.1
+Date: 13. 03. 2023
+  Locale:
+    - Updated French translation (contributed by https://github.com/XZ1048576 )
+    - Added Turkish translation (contributed by @oncelx on crowdin)
+---------------------------------------------------------------------------------------------------
 Version: 0.11.0
-Date: 03. 02. 2023
+Date: 03. 03. 2023
   Locale:
     - Added French translation (contributed by https://github.com/XZ1048576 )
   Features:
