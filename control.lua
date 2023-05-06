@@ -2,24 +2,21 @@ require('mod-gui')
 local Entity = require("stdlib/entity/entity")
 local Surface = require("stdlib/surface")
 local microcontroller = require('microcontroller')
+local Event = require('stdlib/event/event')
 require('stdlib/string')
 require('constants')
 require('stdlib/area/tile')
 
+
 function get_player_data(player_index)
-    if global.player_data == nil then
-        global.player_data = {}
-    end
     local player_data = global.player_data[player_index] or {}
     return player_data
 end
 
 function set_player_data(player_index, data)
-    if global.player_data == nil then
-        global.player_data = {}
-    end
     global.player_data[player_index] = data
 end
+
 
 -- Handle MicroController OPEN event.
 script.on_event("open-gui", function(event)
@@ -302,11 +299,6 @@ end
 
 local update_tick_time = settings.startup["mc_update_tick_time"].value
 script.on_nth_tick(update_tick_time, function()
-    -- Ensure we have a table to store microcontrollers in the global state.
-    if not global.microcontrollers then
-        global.microcontrollers = {}
-    end
-
     local do_update_gui = true
     if update_tick_time < 30 then
         do_update_gui = (game.tick % 60 == 0)
@@ -459,7 +451,16 @@ function microcontrollerGui( player, entity )
     set_player_data(player.index, player_data)
 end
 
+function update_global_data()
+	global.microcontrollers = global.microcontrollers or {}
+	global.player_data = global.player_data or {}
+end
+
+Event.register(Event.core_events.init, update_global_data)
+
 script.on_configuration_changed(function(event)
+	update_global_data()
+
     local mod_changes = event.mod_changes["m-microcontroller"]
     if not (mod_changes and mod_changes.old_version) then return end
 
