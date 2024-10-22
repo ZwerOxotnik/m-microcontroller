@@ -60,7 +60,7 @@ data:extend{
             {type = "unlock-recipe", recipe = "microcontroller"},
             {type = "unlock-recipe", recipe = "microcontroller-ram"}
         },
-        prerequisites = {"circuit-network", "advanced-electronics"},
+        prerequisites = {"circuit-network", "advanced-circuit"},
         unit = {
             count = 250,
             ingredients = {
@@ -73,25 +73,34 @@ data:extend{
     }, {
         type = "recipe",
         name = "microcontroller",
+        icon = "__m-microcontroller__/graphics/microchip.png",
+        icon_size = 32,
         enabled = false,
-        ingredients = {{"arithmetic-combinator", 3}, {"decider-combinator", 3}},
+        ingredients = {
+			{type = "item", name = "arithmetic-combinator", amount = 3},
+			{type = "item", name = "decider-combinator", amount = 3},
+		},
         energy_required = 1,
-        results = {{"microcontroller", 1}}
+        results = {{type = "item", name = "microcontroller", amount = 1}},
     }, {
         type = "recipe",
         name = "microcontroller-ram",
+        icon = "__m-microcontroller__/graphics/ram.png",
+        icon_size = 32,
         enabled = false,
-        ingredients = {{"arithmetic-combinator", 3}, {"advanced-circuit", 2}},
+        ingredients = {
+			{type = "item", name = "arithmetic-combinator", amount = 3},
+			{type = "item", name = "advanced-circuit", amount = 2},
+		},
         energy_required = 1,
-        results = {{"microcontroller-ram", 1}}
+        results = {{type = "item", name = "microcontroller-ram", amount = 1}},
     },
     {type = "custom-input", name = "microcontroller-close", key_sequence = "E"},
     {type = "font", name = "default-mono", from = "default-mono", size = 16}
 }
 
-local function gen_tech(no,nb_packs_type,nb_packs,time,prerequisites)
+local function gen_tech(no, nb_packs_type, nb_packs, time, prerequisites)
     local ingredients = {
-      {"automation-science-pack", 1},
       {"logistic-science-pack", 1},
       {"chemical-science-pack", 1},
       {"production-science-pack", 1},
@@ -99,12 +108,12 @@ local function gen_tech(no,nb_packs_type,nb_packs,time,prerequisites)
       {"space-science-pack", 1}
     }
     while(#ingredients > nb_packs_type) do
-        table.remove(ingredients,#ingredients)
+        table.remove(ingredients, #ingredients)
     end
     local unit={
-        count=nb_packs,
-        time=time,
-        ingredients=ingredients
+        count = nb_packs,
+        time  = time,
+        ingredients = ingredients
     }
     local name="microcontroller-program-size-" .. no
     local order="c-g-b-" .. string.char(96+no)
@@ -114,24 +123,24 @@ local function gen_tech(no,nb_packs_type,nb_packs,time,prerequisites)
     return {
         type = "technology",
         name = name,
-        icon_size=128,
+        icon_size = 128,
         icon="__m-microcontroller__/graphics/microchip_large.png",
         prerequisites = prerequisites,
         effects = {},
+		upgrade = true,
         unit = unit,
-        order = order
+        order = order,
     }
 end
 
-local infinite_tech=gen_tech(4,6,0,60,{"space-science-pack"})
-infinite_tech.unit.count_formula="(L-3)*1000"
-infinite_tech.unit.count=nil
-infinite_tech.max_level="infinite"
-infinite_tech.upgrade="true"
+local infinite_tech = gen_tech(4,6,0,60, {"space-science-pack"})
+infinite_tech.unit.count_formula = "(L-3)*1000"
+infinite_tech.unit.count = nil
+infinite_tech.max_level = "infinite"
 data:extend{
-    gen_tech(1,3,300,40,{"microcontroller","chemical-science-pack"}),
-    gen_tech(2,4,500,45,{"production-science-pack"}),
-    gen_tech(3,5,750,50,{"utility-science-pack"}),
+    gen_tech(1,3,300,40, {"microcontroller","chemical-science-pack"}),
+    gen_tech(2,4,500,45, {"production-science-pack"}),
+    gen_tech(3,5,750,50, {"utility-science-pack"}),
     infinite_tech
 }
 

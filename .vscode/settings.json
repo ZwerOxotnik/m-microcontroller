@@ -39,7 +39,7 @@
 		"table": "enable",
 		"math": "enable",
 		"string": "enable",
-		"package": "enable",
+		"package": "disable",
 		"debug": "enable",
 		"bit32": "disable",
 		"io": "disable",

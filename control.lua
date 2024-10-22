@@ -9,12 +9,12 @@ require('stdlib/area/tile')
 
 
 function get_player_data(player_index)
-    local player_data = global.player_data[player_index] or {}
+    local player_data = storage.player_data[player_index] or {}
     return player_data
 end
 
 function set_player_data(player_index, data)
-    global.player_data[player_index] = data
+    storage.player_data[player_index] = data
 end
 
 
@@ -78,20 +78,20 @@ end
 
 -- Handle Entity built event.
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
-    local entity = event.created_entity
+    local entity = event.entity
     if not (entity and entity.valid) then return end
 
     if entity.name == "microcontroller" then
         -- Init and insert new microcontroller to global state.
         microcontroller.init(entity, {})
         local didFind = false
-        for _, mc in ipairs(global.microcontrollers) do
+        for _, mc in ipairs(storage.microcontrollers) do
             if mc == entity then
                 didFind = true
             end
         end
         if not didFind then
-            table.insert(global.microcontrollers, entity)
+            table.insert(storage.microcontrollers, entity)
         end
 
         attach_microcontroller(entity)
@@ -290,7 +290,9 @@ script.on_event(microcontroller.event_halt, function(event)
 end)
 
 local function signalToSpritePath(signal)
-    if signal.type == "virtual" then
+    if signal.type == nil then
+        return "item/" .. signal.name
+	elseif signal.type == "virtual" then
         return "virtual-signal/" .. signal.name
     else
         return signal.type .. '/' .. signal.name
@@ -305,8 +307,8 @@ script.on_nth_tick(update_tick_time, function()
     end
 
     -- Iterate through all stored microcontrollers.
-    for i = #global.microcontrollers, 1, -1 do
-        local mc = global.microcontrollers[i]
+    for i = #storage.microcontrollers, 1, -1 do
+        local mc = storage.microcontrollers[i]
         if mc.valid then
             local mc_state = Entity.get_data(mc)
             if mc_state then
@@ -333,19 +335,19 @@ script.on_nth_tick(update_tick_time, function()
 
                     -- Update the inspector GUI.
                     if mc_state.inspector and mc_state.inspector.valid then
-                        for i = 1, 4 do -- TODO: check with various entites
-                            mc_state.inspector['mem'..i..'-inspect'].sprite = signalToSpritePath( mc_state.memory[i].signal)
-                            mc_state.inspector['mem'..i..'-inspect'].number = mc_state.memory[i].count
+                        for j = 1, 4 do -- TODO: check with various entites
+                            mc_state.inspector['mem'..j..'-inspect'].sprite = signalToSpritePath(mc_state.memory[j].signal)
+                            mc_state.inspector['mem'..j..'-inspect'].number = mc_state.memory[j].count
                         end
                     end
                 end
 
                 -- Check adjacent modules still exists.
                 if mc_state.adjacent_modules ~= nil then
-                    for i = 4, 1, -1 do
-                        local module = mc_state.adjacent_modules[i]
+                    for j = 4, 1, -1 do
+                        local module = mc_state.adjacent_modules[j]
                         if module and not module.valid then
-                            mc_state.adjacent_modules[i] = nil
+                            mc_state.adjacent_modules[j] = nil
                         end
                     end
                 end
@@ -365,7 +367,7 @@ script.on_nth_tick(update_tick_time, function()
                 end
                 set_player_data(player_index, player_data)
             end
-            table.remove(global.microcontrollers, i)
+            table.remove(storage.microcontrollers, i)
         end
     end
 end)
@@ -400,10 +402,10 @@ function microcontrollerGui( player, entity )
     local outerflow = gWindow.add{type = "table", name = "outer", column_count = 1}
 
     local buttons_row = outerflow.add{type = "flow", name = "buttons_row", column_count = 1}
-    state.gui_run_button = buttons_row.add{type = "sprite-button", name = "run-program", sprite = "microcontroller-play-sprite"}
-    state.gui_step_button = buttons_row.add{type = "sprite-button", name = "step-program", sprite = "microcontroller-next-sprite"}
-    state.gui_halt_button = buttons_row.add{type = "sprite-button", name = "halt-program", sprite = "microcontroller-stop-sprite"}
-    state.gui_copy_button = buttons_row.add{type = "sprite-button", name = "copy-program", sprite = "microcontroller-copy-sprite"}
+    state.gui_run_button   = buttons_row.add{type = "sprite-button", name = "run-program", sprite = "microcontroller-play-sprite"}
+    state.gui_step_button  = buttons_row.add{type = "sprite-button", name = "step-program", sprite = "microcontroller-next-sprite"}
+    state.gui_halt_button  = buttons_row.add{type = "sprite-button", name = "halt-program", sprite = "microcontroller-stop-sprite"}
+    state.gui_copy_button  = buttons_row.add{type = "sprite-button", name = "copy-program", sprite = "microcontroller-copy-sprite"}
     state.gui_paste_button = buttons_row.add{type = "sprite-button", name = "paste-program", sprite = "microcontroller-paste-sprite"}
     buttons_row.add{type = "sprite-button", name = "mc-help-button", sprite = "microcontroller-info-sprite"}
     state.gui_exit_button = buttons_row.add{type = "sprite-button", name = "close-microcontroller-window", sprite = "microcontroller-exit-sprite"}
@@ -452,8 +454,8 @@ function microcontrollerGui( player, entity )
 end
 
 function update_global_data()
-	global.microcontrollers = global.microcontrollers or {}
-	global.player_data = global.player_data or {}
+	storage.microcontrollers = storage.microcontrollers or {}
+	storage.player_data = storage.player_data or {}
 end
 
 Event.register(Event.core_events.init, update_global_data)
@@ -466,7 +468,7 @@ script.on_configuration_changed(function(event)
 
     local version = tonumber(string.gmatch(mod_changes.old_version, "%d+.%d+")())
     if version <= 0.9 then
-        for _, mc in pairs(global.microcontrollers) do
+        for _, mc in pairs(storage.microcontrollers) do
             if mc.valid then
                 local control_behavior = mc.get_control_behavior()
                 if control_behavior.parameters.second_constant == 0 then

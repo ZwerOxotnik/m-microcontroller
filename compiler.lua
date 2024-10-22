@@ -119,8 +119,8 @@ end
 --- Evaluates an AST.
 local function eval( ast, control, memory, modules, program_counter, clock )
     local wires = {}
-    wires.red = control.get_circuit_network(defines.wire_type.red, defines.circuit_connector_id.combinator_input)
-    wires.green = control.get_circuit_network(defines.wire_type.green, defines.circuit_connector_id.combinator_input)
+    wires.red = control.get_circuit_network(defines.wire_connector_id.combinator_input_red)
+    wires.green = control.get_circuit_network(defines.wire_connector_id.combinator_input_green)
 
     local node, num
     -- Assertion Helper Functions
