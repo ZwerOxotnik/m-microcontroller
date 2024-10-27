@@ -74,5 +74,16 @@
 	],
 	"triggerTaskOnSave.tasks": {
 		"Luacheck": ["*.lua"]
-	}
+  },
+  "factorio.versions": [
+    {
+      "name": "2.0 Una",
+      "factorioPath": "/media/pcu1/D/factorio/bin/x64/factorio",
+      "active": true
+    }
+  ],
+  "Lua.workspace.userThirdParty": [
+	"/home/pcu1/.config/Code/User/workspaceStorage/c46a7d937062c3cbb136293e17ca39f3/justarandomgeek.factoriomod-debug/sumneko-3rd"
+],
+  "Lua.workspace.checkThirdParty": "ApplyInMemory"
 }

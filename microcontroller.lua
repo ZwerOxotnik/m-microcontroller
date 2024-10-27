@@ -133,7 +133,7 @@ function microcontroller.tick( mc, state )
 
     -- Interrupts
     local control = mc.get_control_behavior()
-    local red_input = control.get_circuit_network(defines.wire_connector_id.combinator_input_red)
+    local red_input   = control.get_circuit_network(defines.wire_connector_id.combinator_input_red)
     local green_input = control.get_circuit_network(defines.wire_connector_id.combinator_input_green)
     local get_signal = function(signal)
         if red_input then
