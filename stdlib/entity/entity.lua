@@ -129,8 +129,8 @@ end
 function Entity.set_indestructible(entity, mode)
     fail_if_missing(entity, "missing entity argument")
     mode = mode == false and true or false
-    entity.minable       = mode
-    entity.destructible  = mode
+    entity.minable_flag = mode
+    entity.destructible = mode
     return entity
 end
 
